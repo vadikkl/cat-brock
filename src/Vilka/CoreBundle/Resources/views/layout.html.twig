@@ -1,0 +1,42 @@
+{% extends '::base.html.twig' %}
+{% block title %}Главная {{ parent() }}{% endblock %}
+{% block body %}
+    {% block header %}
+        {% include 'VilkaCoreBundle:_partials:header.html.twig' %}
+    {% endblock %}
+
+    {% block content_wrapper %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2" id="nav-col">
+                    {% include 'VilkaCoreBundle:_partials:sidebar_navigation.html.twig' %}
+                </div>
+                <div class="col-md-10" id="content-wrapper">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {% for type, messages in app.session.flashbag.all() %}
+                                {% for key, message in messages %}
+                                    <div class="alert alert-{{ type }} fade in">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        {% if type == 'success' %}
+                                            <i class="fa fa-check-circle fa-fw fa-lg"></i>
+                                        {% else %}
+                                            <i class="fa fa-warning fa-fw fa-lg"></i>
+                                        {% endif %}
+                                        {{ message|trans() }}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% block content %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {% include 'VilkaCoreBundle:_partials:footer.html.twig' %}
+    {% endblock %}
+{% endblock %}
+

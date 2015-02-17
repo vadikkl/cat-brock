@@ -1,0 +1,64 @@
+{% extends 'VilkaCoreBundle::layout.html.twig' %}
+{% block title %}Профиль{% endblock %}
+{% block content %}
+    <h1>User Profile</h1>
+    <div class="row" id="user-profile">
+        <div class="col-lg-3 col-md-4 col-sm-4">
+            <div class="main-box clearfix">
+                <h2>{{ app.user.username }}</h2>
+
+                <div class="profile-status">
+                    <i class="fa fa-check-circle"></i> Online
+                </div>
+
+                <img src="{{ asset('bundles/vilkacore/img/samples/no-logo.png') }}" alt="" class="profile-img img-responsive center-block" />
+
+                <div class="profile-label">
+                    <span class="label label-danger">{{ app.user.roles.0 }}</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-md-8 col-sm-8">
+            <div class="main-box clearfix">
+                <div class="profile-header">
+                    <h3><span>User info</span></h3>
+                    <a href="{{ path('vilka_control_profile_edit') }}" class="btn btn-primary edit-profile">
+                        <i class="fa fa-pencil-square fa-lg"></i>
+                        Редактирование профиля
+                    </a>
+                </div>
+
+                <div class="row profile-user-info">
+                    <div class="col-sm-12">
+                        <div class="profile-user-details clearfix">
+                            <div class="profile-user-details-label">
+                                Username
+                            </div>
+                            <div class="profile-user-details-value">
+                                {{ app.user.username }}
+                            </div>
+                        </div>
+                        <div class="profile-user-details clearfix">
+                            <div class="profile-user-details-label">
+                                Email
+                            </div>
+                            <div class="profile-user-details-value">
+                                {{ app.user.email }}
+                            </div>
+                        </div>
+                        <div class="profile-user-details clearfix">
+                            <div class="profile-user-details-label">
+                                Last login
+                            </div>
+                            <div class="profile-user-details-value">
+                                {{ app.user.lastLogin|date('Y-m-d H:i:s') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

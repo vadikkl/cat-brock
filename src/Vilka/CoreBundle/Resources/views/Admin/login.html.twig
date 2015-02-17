@@ -1,0 +1,66 @@
+{% extends 'VilkaCoreBundle::layout.html.twig' %}
+
+{% block title %}Вход в систему {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="login-box">
+                    <div class="row">
+                        <div class="col-xs-12 clearfix" id="login-box-header">
+                            <div class="login-box-header-red"></div>
+                            <div class="login-box-header-green"></div>
+                            <div class="login-box-header-yellow"></div>
+                            <div class="login-box-header-purple"></div>
+                            <div class="login-box-header-blue"></div>
+                            <div class="login-box-header-gray"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div id="login-box-inner">
+                                <div id="login-logo">
+                                    <img src="{{ asset('bundles/vilkacore/img/logo-login.png') }}" alt=""/> WilkaAdmin
+                                </div>
+
+                                {% if error %}
+                                    <div class="error">{{ error.message }}</div>
+                                {% endif %}
+
+                                <form action="{{ path('_security_check') }}" method="POST">
+
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <input class="form-control" type="text" placeholder="Логин" id="username" name="_username" value="{{ last_username }}"/>
+                                    </div>
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                        <input type="password" id="password" name="_password" class="form-control" placeholder="Пароль"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label><input type="checkbox"> Запомнить меня</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-xs-12 col-sm-push-6">
+                                            <button type="submit" name="login" class="btn btn-success col-xs-12">Войти</button>
+                                        </div>
+                                        <a href="#" id="login-forget-link" class="col-sm-6 col-xs-12 col-sm-pull-6">
+                                            Забыл пароль?
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body{background: #eee;}
+    </style>
+{% endblock %}

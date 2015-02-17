@@ -1,0 +1,4 @@
+vilka_core:
+    resource: "@VilkaCoreBundle/Resources/config/routing.yml"
+    prefix:   /
+

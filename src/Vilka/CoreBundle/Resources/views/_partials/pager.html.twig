@@ -1,0 +1,36 @@
+{% set itemOfPageCurr = 0 %}
+{% if (count > limit) %}
+    <ul class="pagination pull-right">
+        {% for i in 1..pageCount %}
+            {% set print = 1 %}
+            {% if (i == page) %}
+                <li class="active"><a>{{ i }}</a></li>
+            {% else %}
+                {% if  ((pageCount > 10) and (page > 5)) %}
+                    {% if (i < page-4 and i != 1) %}
+                        {% if (i == page-5) %}
+                            <li class="disabled"><a>...</a></li>
+
+                        {% endif %}
+                        {% set print = 0 %}
+                    {% endif %}
+                {% endif %}
+                {% if  ((pageCount > 10) and (page < pageCount-5)) %}
+                    {% if  ((i != pageCount)) %}
+                        {% if (i > 5) %}
+                            {% if (i == page+5) %}
+                                <li class="disabled"><a>...</a></li>
+                            {% endif %}
+                            {% if (i > page+4) %}
+                                {% set print = 0 %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                {% if (print == 1) %}
+                    <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'page':i})) }}">{{ i }}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

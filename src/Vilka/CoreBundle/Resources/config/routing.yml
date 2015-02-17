@@ -1,0 +1,18 @@
+vilka_core_homepage:
+    path:     /hi/{name}
+    defaults: { _controller: VilkaCoreBundle:Default:index }
+vilka_control:
+    resource: "@VilkaCoreBundle/Controller/AdminController.php"
+    type:     annotation
+vilka_control_subway:
+    resource: "@VilkaCoreBundle/Controller/SubwayController.php"
+    type:     annotation
+vilka_control_setting:
+    resource: "@VilkaCoreBundle/Controller/SettingController.php"
+    type:     annotation
+
+
+_security_check:
+    pattern:  /login_check
+_security_logout:
+    pattern:  /logout
