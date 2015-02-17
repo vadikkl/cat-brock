@@ -1,0 +1,28 @@
+# Bootstrap
+app/bootstrap*
+
+# Symfony directories
+vendor/*
+*/logs/*
+*/cache/*
+web/uploads/*
+web/bundles/*
+web/css/*
+web/js/*
+bin/paratest
+bin/phpunit
+bin/sauce_config
+
+# Configuration files
+app/config/parameters.ini
+app/config/parameters.yml
+
+# Composer
+composer.phar
+
+# IDE
+.idea
+
+#logs
+access.log
+error.log
