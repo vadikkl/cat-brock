@@ -1,16 +1,14 @@
 <?php
 
-namespace Ringbe\Bundle\CoreBundle\Entity;
+namespace Vilka\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Exclude;
-use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Setting
  *
- * @ORM\Table(name="settings")
+ * @ORM\Table(name="setting")
  * @ORM\Entity(repositoryClass="Vilka\CoreBundle\Repository\SettingRepository")
  */
 class Setting
@@ -20,39 +18,47 @@ class Setting
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=45, nullable=false)
-     *
-     * @Expose
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="string", length=255, nullable=true)
-     *
-     * @Expose
+     * @ORM\Column(name="value", type="string", length=500)
      */
     private $value;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @ORM\Column(name="description", type="string", length=1000)
      */
     private $description;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set name
      *
      * @param string $name
+     *
      * @return Setting
      */
     public function setName($name)
@@ -76,6 +82,7 @@ class Setting
      * Set value
      *
      * @param string $value
+     *
      * @return Setting
      */
     public function setValue($value)
@@ -88,7 +95,7 @@ class Setting
     /**
      * Get value
      *
-     * @return string|bool
+     * @return string
      */
     public function getValue()
     {
@@ -99,6 +106,7 @@ class Setting
      * Set description
      *
      * @param string $description
+     *
      * @return Setting
      */
     public function setDescription($description)
@@ -117,14 +125,5 @@ class Setting
     {
         return $this->description;
     }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 }
+

@@ -7,23 +7,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Vilka\CoreBundle\Manager\RestaurantManager;
+use Vilka\CoreBundle\Manager\SettingManager;
 use Vilka\CoreBundle\Manager\SubwayManager;
 use Vilka\CoreBundle\Manager\UserManager;
 use Vilka\CoreBundle\Repository\SettingRepository;
 use Vilka\CoreBundle\Repository\UserRepository;
 use Vilka\CoreBundle\Repository\RestaurantRepository;
-use Vilka\CoreBundle\Repository\CompanyRepository;
-use Vilka\CoreBundle\Repository\CityRepository;
-use Vilka\CoreBundle\Repository\DistrictRepository;
 use Vilka\CoreBundle\Repository\SubwayRepository;
-use Vilka\CoreBundle\Repository\KitchenRepository;
-use Vilka\CoreBundle\Repository\CardRepository;
-use Vilka\CoreBundle\Repository\ClassificationRepository;
-use Vilka\CoreBundle\Repository\EntertainmentRepository;
-use Vilka\CoreBundle\Repository\EventRepository;
-use Vilka\CoreBundle\Repository\MenuFeatureRepository;
-use Vilka\CoreBundle\Repository\FeatureRepository;
-use Vilka\CoreBundle\Repository\MusicRepository;
 
 class AdvancedController extends Controller
 {
@@ -128,35 +118,11 @@ class AdvancedController extends Controller
     }
 
     /**
-     * @return CityRepository
-     */
-    public function getCityRepository()
-    {
-        return $this->getRepository('City');
-    }
-
-    /**
-     * @return CompanyRepository
-     */
-    public function getCompanyRepository()
-    {
-        return $this->getRepository('Company');
-    }
-
-    /**
      * @return SettingRepository
      */
     public function getSettingRepository()
     {
         return $this->getRepository('Setting');
-    }
-
-    /**
-     * @return DistrictRepository
-     */
-    public function getDistrictRepository()
-    {
-        return $this->getRepository('District');
     }
 
     /**
@@ -168,75 +134,19 @@ class AdvancedController extends Controller
     }
 
     /**
-     * @return KitchenRepository
-     */
-    public function getKitchenRepository()
-    {
-        return $this->getRepository('Kitchen');
-    }
-
-    /**
-     * @return CardRepository
-     */
-    public function getCardRepository()
-    {
-        return $this->getRepository('Card');
-    }
-
-    /**
-     * @return ClassificationRepository
-     */
-    public function getClassificationRepository()
-    {
-        return $this->getRepository('Classification');
-    }
-
-    /**
-     * @return EntertainmentRepository
-     */
-    public function getEntertainmentRepository()
-    {
-        return $this->getRepository('Entertainment');
-    }
-
-    /**
-     * @return EventRepository
-     */
-    public function getEventRepository()
-    {
-        return $this->getRepository('Event');
-    }
-
-    /**
-     * @return MenuFeatureRepository
-     */
-    public function getMenuFeatureRepository()
-    {
-        return $this->getRepository('MenuFeature');
-    }
-
-    /**
-     * @return FeatureRepository
-     */
-    public function getFeatureRepository()
-    {
-        return $this->getRepository('Feature');
-    }
-
-    /**
-     * @return MusicRepository
-     */
-    public function getMusicRepository()
-    {
-        return $this->getRepository('Music');
-    }
-
-    /**
      * @return RestaurantManager
      */
     public function getRestaurantManager()
     {
         return $this->get('vilka.manager.restaurant');
+    }
+
+    /**
+     * @return SettingManager
+     */
+    public function getSettingManager()
+    {
+        return $this->get('vilka.manager.setting');
     }
 
     /**

@@ -16,18 +16,18 @@
             {#<li><a href="#"><i class="fa fa-calendar"></i><span>Календарь</span></a></li>#}
             {#<li><a href="#"><i class="fa fa-desktop"></i><span>Афиша</span></a></li>#}
             {#<li><a href="#"><i class="fa fa-comments"></i><span>Отзывы</span></a></li>#}
-            <li {% if is_book is defined %}class="open"{% endif %}>
-                <a href="#" class="dropdown-toggle">
-                    <i class="fa fa-file-text-o"></i>
-                    <span>Справочники</span>
-                    <i class="fa fa-chevron-circle-down drop-icon"></i>
-                </a>
-                <ul class="submenu" {% if is_book is defined %}style="display: block;"{% endif %}>
+            {#<li {% if is_book is defined %}class="open"{% endif %}>#}
+                {#<a href="#" class="dropdown-toggle">#}
+                    {#<i class="fa fa-file-text-o"></i>#}
+                    {#<span>Справочники</span>#}
+                    {#<i class="fa fa-chevron-circle-down drop-icon"></i>#}
+                {#</a>#}
+                {#<ul class="submenu" {% if is_book is defined %}style="display: block;"{% endif %}>#}
                     {#<li><a href="#">Районы</a></li>#}
-                    {#<li><a href="#">Города</a></li>#}
-                    <li>
-                        <a {% if 'vilka_control_subway' in currentRoute %}class="active"{% endif %} href="{{ path('vilka_control_subway') }}">Метро</a>
-                    </li>
+                    {#&#123;&#35;<li><a href="#">Города</a></li>&#35;&#125;#}
+                    {#<li>#}
+                        {#<a {% if 'vilka_control_subway' in currentRoute %}class="active"{% endif %} href="{{ path('vilka_control_subway') }}">Метро</a>#}
+                    {#</li>#}
                     {#<li><a href="#">Кредитные карты</a></li>#}
                     {#<li><a href="#">Классификации заведений</a></li>#}
                     {#<li><a href="#">Развлечения</a></li>#}
@@ -36,8 +36,8 @@
                     {#<li><a href="#">Кухни</a></li>#}
                     {#<li><a href="#">Особенности меню</a></li>#}
                     {#<li><a href="#">Музыкальные жанры</a></li>#}
-                </ul>
-            </li>
+                {#</ul>#}
+            {#</li>#}
             {#<li><a href="#"><i class="fa fa-question"></i><span>FAQ</span></a></li>#}
         </ul>
     </div>

@@ -19,7 +19,7 @@
                                 <i class="fa fa-search search-icon"></i>
                             {{ form_end(form) }}
                         </div>
-                        <a href="{{ path('vilka_control_subway_create') }}" class="btn btn-primary pull-right">
+                        <a href="{{ path('vilka_control_setting_create') }}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Добавить настройку
                         </a>
                     </div>
@@ -35,12 +35,17 @@
                                 </th>
                                 <th>
                                     <a href="#">
-                                        <span class="name">Станция</span>
+                                        <span class="name">Идентификатор</span>
                                     </a>
                                 </th>
                                 <th class="text-center">
                                     <a href="#">
-                                        <span class="line">Ветка</span>
+                                        <span class="value">Значение</span>
+                                    </a>
+                                </th>
+                                <th class="text-center">
+                                    <a href="#">
+                                        <span class="description">Описание</span>
                                     </a>
                                 </th>
                                 <th><span></span></th>
@@ -50,17 +55,16 @@
                         {% for entity in entities %}
                             <tr>
                                 <td>
-                                    <a href="{{ path('vilka_control_subway_view', { 'id': entity.id }) }}">
-                                        # {{ entity.id }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ path('vilka_control_subway_view', { 'id': entity.id }) }}">
-                                        {{ entity.name }}
-                                    </a>
+                                    # {{ entity.id }}
                                 </td>
                                 <td class="text-center">
-                                    <span class="label label-danger">{{ entity.line }}</span>
+                                    {{ entity.name }}
+                                </td>
+                                <td class="text-center">
+                                    {{ entity.value }}
+                                </td>
+                                <td class="text-center">
+                                    {{ entity.description }}
                                 </td>
                                 <td class="text-right table-controls">
                                     <span>

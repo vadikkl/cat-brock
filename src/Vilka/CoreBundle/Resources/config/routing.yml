@@ -1,6 +1,6 @@
 vilka_core_homepage:
-    path:     /hi/{name}
-    defaults: { _controller: VilkaCoreBundle:Default:index }
+    path:     /
+    defaults: { _controller: AcmeDemoBundle:Welcome:index }
 vilka_control:
     resource: "@VilkaCoreBundle/Controller/AdminController.php"
     type:     annotation

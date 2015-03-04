@@ -29,13 +29,13 @@ class User extends BaseUser
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Restaurant", inversedBy="users")
      */
-    protected $restaurants;
+    //protected $restaurants;
 
-    public function __construct()
+    /*public function __construct()
     {
         parent::__construct();
         $this->restaurants = new ArrayCollection();
-    }
+    }*/
 
     /**
      * Get id
@@ -55,30 +55,30 @@ class User extends BaseUser
      * @param \Vilka\CoreBundle\Entity\Restaurant $restaurants
      * @return User
      */
-    public function addRestaurant(\Vilka\CoreBundle\Entity\Restaurant $restaurants)
+    /*public function addRestaurant(\Vilka\CoreBundle\Entity\Restaurant $restaurants)
     {
         $this->restaurants[] = $restaurants;
 
         return $this;
-    }
+    }*/
 
     /**
      * Remove restaurants
      *
      * @param \Vilka\CoreBundle\Entity\Restaurant $restaurants
      */
-    public function removeRestaurant(\Vilka\CoreBundle\Entity\Restaurant $restaurants)
+    /*public function removeRestaurant(\Vilka\CoreBundle\Entity\Restaurant $restaurants)
     {
         $this->restaurants->removeElement($restaurants);
-    }
+    }*/
 
     /**
      * Get restaurants
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getRestaurants()
+    /*public function getRestaurants()
     {
         return $this->restaurants;
-    }
+    }*/
 }
