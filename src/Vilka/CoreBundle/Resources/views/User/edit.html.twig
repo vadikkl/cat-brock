@@ -1,0 +1,38 @@
+{% extends 'VilkaCoreBundle::layout.html.twig' %}
+{% set is_book = true %}
+{% block title %}Редактирование настройки{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box">
+                        <h2>Редактирование настройки</h2>
+                        {{ form_start(edit_form) }}
+                        {{ form_errors(edit_form) }}
+                        <div class="form-group">
+                            {{ form_label(edit_form.name, 'Идентификатор') }}
+                            {{ form_widget(edit_form.name, { 'attr': {'class': 'form-control', 'placeholder': 'Введите идентификатор'} }) }}
+                            {{ form_errors(edit_form.name, { 'attr': {'class': 'error-message'} }) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(edit_form.value, 'Значение') }}
+                            {{ form_widget(edit_form.value, { 'attr': {'class': 'form-control', 'placeholder': 'Введите значение'} }) }}
+                            {{ form_errors(edit_form.value, { 'attr': {'class': 'error-message'} }) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(edit_form.description, 'Описание') }}
+                            {{ form_widget(edit_form.description, { 'attr': {'class': 'form-control', 'placeholder': 'Описание'} }) }}
+                            {{ form_errors(edit_form.description, { 'attr': {'class': 'error-message'} }) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_widget(edit_form.submit, { 'attr': {'class': 'btn btn-success'} }) }}
+                        </div>
+                        {{ form_end(edit_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

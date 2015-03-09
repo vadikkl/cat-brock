@@ -8,6 +8,12 @@
                     <span>Панель управления</span>
                 </a>
             </li>
+            <li {% if 'vilka_control_user' in currentRoute %}class="active"{% endif %}>
+                <a href="{{ path('vilka_control_user') }}">
+                    <i class="fa fa-users"></i>
+                    <span>Пользователи</span>
+                </a>
+            </li>
             {#<li><a href="#"><i class="fa fa-globe"></i><span>Компании</span></a></li>#}
             {#<li><a href="#"><i class="fa fa-map-marker"></i><span>Рестораны</span></a></li>#}
             {#<li><a href="#"><i class="fa fa-users"></i><span>Пользователи</span></a></li>#}

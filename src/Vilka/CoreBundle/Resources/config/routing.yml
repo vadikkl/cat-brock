@@ -10,7 +10,9 @@ vilka_control_subway:
 vilka_control_setting:
     resource: "@VilkaCoreBundle/Controller/SettingController.php"
     type:     annotation
-
+vilka_control_user:
+    resource: "@VilkaCoreBundle/Controller/UserController.php"
+    type:     annotation
 
 _security_check:
     pattern:  /login_check

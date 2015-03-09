@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Vilka\CoreBundle\Manager\RestaurantManager;
 use Vilka\CoreBundle\Manager\SettingManager;
 use Vilka\CoreBundle\Manager\SubwayManager;
@@ -17,7 +18,6 @@ use Vilka\CoreBundle\Repository\SubwayRepository;
 
 class AdvancedController extends Controller
 {
-
     /**
      * @param string $routeName
      * @param array $params

@@ -1,5 +1,5 @@
 <footer id="footer-bar">
     <p id="footer-copyright">
-        &copy; 2015 <a href="{{ path('vilka_core_homepage') }}" target="_blank">parser</a>. Powered by Symfony 2.
+        {{ app.session.get('settings').copyright }} :: <a href="{{ path('vilka_core_homepage') }}" target="_blank">{{ app.session.get('settings').site_name }}</a> :: {{ app.session.get('settings').footer_text }}
     </p>
 </footer>
