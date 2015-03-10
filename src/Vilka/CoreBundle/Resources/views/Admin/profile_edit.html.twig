@@ -1,5 +1,5 @@
 {% extends 'VilkaCoreBundle::layout.html.twig' %}
-{% block title %}Редактирование профиля{% endblock %}
+{% block title %}Редактирование профиля {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 
 {% block content %}
     <div class="row">

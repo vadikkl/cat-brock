@@ -1,6 +1,6 @@
 {% extends 'VilkaCoreBundle::layout.html.twig' %}
 {% set is_book = true %}
-{% block title %}Создание настройки{% endblock %}
+{% block title %}Создание настройки {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 
 {% block content %}
 

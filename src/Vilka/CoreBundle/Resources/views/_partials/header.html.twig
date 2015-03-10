@@ -2,7 +2,7 @@
     <div class="container">
         <a href="{{ path('vilka_control_index') }}" id="logo" class="navbar-brand col-md-3 col-sm-3 col-xs-12">
             {#<img src="{{ asset('bundles/vilkacore/img/logo.png') }}" alt=""/> #}
-            <span>{{ app.session.get('settings').site_name }}</span>
+            <span>{{ app.session.get('settings').site_name }} {{ app.session.get('settings').separator }} {{ app.session.get('settings').panel_name }}</span>
         </a>
 
         <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">

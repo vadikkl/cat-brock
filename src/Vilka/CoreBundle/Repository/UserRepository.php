@@ -37,12 +37,14 @@ class UserRepository extends EntityRepository
 
     private function setFilters(&$query, $search)
     {
+        /*$query->where('u.roles NOT LIKE :role')
+            ->setParameter('role', '%ROLE_ADMIN%');*/
         if ($search) {
-            $query = $query->where('u.name LIKE :search')
+            $query = $query->where('u.username LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
-            $query = $query->orWhere('u.value LIKE :search')
+            $query = $query->orWhere('u.email LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
-            $query = $query->orWhere('u.description LIKE :search')
+            $query = $query->orWhere('u.roles LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
         }
     }

@@ -1,5 +1,5 @@
 {% extends 'VilkaCoreBundle::layout.html.twig' %}
-{% block title %}Профиль{% endblock %}
+{% block title %}Профиль {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 {% block content %}
     <h1>User Profile</h1>
     <div class="row" id="user-profile">

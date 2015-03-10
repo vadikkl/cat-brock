@@ -1,5 +1,5 @@
 <footer id="footer-bar">
     <p id="footer-copyright">
-        {{ app.session.get('settings').copyright }} :: <a href="{{ path('vilka_core_homepage') }}" target="_blank">{{ app.session.get('settings').site_name }}</a> :: {{ app.session.get('settings').footer_text }}
+        {{ app.session.get('settings').copyright }} {{ app.session.get('settings').footer_separator }} <a href="{{ path('vilka_core_homepage') }}" target="_blank">{{ app.session.get('settings').site_name }}</a> {{ app.session.get('settings').footer_separator }} {{ app.session.get('settings').footer_text }}
     </p>
 </footer>

@@ -1,5 +1,5 @@
 {% extends '::base.html.twig' %}
-{% block title %}Главная {{ parent() }}{% endblock %}
+{% block title %}{{ app.session.get('settings').panel_name }} {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 {% block body %}
     {% block header %}
         {% include 'VilkaCoreBundle:_partials:header.html.twig' %}

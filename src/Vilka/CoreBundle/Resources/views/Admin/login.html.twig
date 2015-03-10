@@ -1,6 +1,6 @@
 {% extends 'VilkaCoreBundle::layout.html.twig' %}
 
-{% block title %}Вход в систему {{ parent() }}{% endblock %}
+{% block title %}Вход в систему {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 
 {% block body %}
     <div class="container">

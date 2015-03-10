@@ -25,7 +25,14 @@ class SettingListener implements EventSubscriberInterface
      */
     private $doctrine;
 
-    private $_settings = array('site_name' => 'Parser');
+    private $_settings = array(
+        'site_name' => 'Site Name',
+        'copyright' => '© 2015',
+        'footer_text' => 'Powered by Symphony 2',
+        'separator' => '|',
+        'panel_name' => 'Panel',
+        'footer_separator' => '::'
+    );
 
     /**
      * @param Registry $doctrine
