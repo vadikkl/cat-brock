@@ -19,7 +19,7 @@
                                 <i class="fa fa-search search-icon"></i>
                             {{ form_end(form) }}
                         </div>
-                        <a href="{{ path('vilka_control_setting_create') }}" class="btn btn-primary pull-right">
+                        <a href="{{ path('vilka_control_user_create') }}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Добавить пользователя
                         </a>
                     </div>
@@ -35,7 +35,12 @@
                                 </th>
                                 <th>
                                     <a href="#">
-                                        <span class="username">Username</span>
+                                        <span class="username">Имя</span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#">
+                                        <span class="enabled">Активен</span>
                                     </a>
                                 </th>
                                 <th>
@@ -45,11 +50,8 @@
                                 </th>
                                 <th>
                                     <a href="#">
-                                        <span class="lastLogin">Last Login</span>
+                                        <span class="lastLogin">Последний вход</span>
                                     </a>
-                                </th>
-                                <th>
-                                    <span>Roles</span>
                                 </th>
                                 <th><span></span></th>
                             </tr>
@@ -63,18 +65,27 @@
                                 <td>
                                     {{ entity.username }}
                                 </td>
+                                <td>
+                                    {% if (entity.enabled) %}
+                                        <span class="label label-success">Активен</span>
+                                    {% else %}
+                                        <span class="label label-default">Не активен</span>
+                                    {% endif %}
+                                </td>
                                 <td>{{ entity.email }}</td>
-                                <td>{{ entity.lastLogin|date('Y-m-d H:i:s') }}</td>
-                                <td>{% for role in entity.roles %}
-                                        {{ role }}
-                                    {% endfor %}
+                                <td>
+                                    {% if (entity.lastLogin) %}
+                                        {{ entity.lastLogin|date('Y-m-d H:i:s') }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
                                 </td>
                                 <td class="text-right table-controls">
                                     <span>
-                                        <a href="{{ path('vilka_control_setting_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i></a>
+                                        <a href="{{ path('vilka_control_user_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i></a>
                                     </span>
                                     <span>
-                                        <a href="{{ path('vilka_control_setting_delete', { 'id': entity.id }) }}"><i class="fa fa-remove"></i></a>
+                                        <a href="{{ path('vilka_control_user_delete', { 'id': entity.id }) }}"><i class="fa fa-remove"></i></a>
                                     </span>
                                 </td>
                             </tr>

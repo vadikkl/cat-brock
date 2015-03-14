@@ -18,7 +18,7 @@ class SettingType extends AbstractType
             ->add('name', 'text')
             ->add('value', 'text')
             ->add('description', 'textarea')
-            ->add('submit', 'submit')
+            ->add('submit', 'submit', array('label' => 'Cохранить'))
         ;
     }
     

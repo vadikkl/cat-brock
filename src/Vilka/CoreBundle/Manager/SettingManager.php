@@ -44,7 +44,7 @@ class SettingManager
     }
 
     /**
-     * @param Setting $subway
+     * @param Setting $setting
      * @return bool
      */
     public function save(Setting $setting)
@@ -61,7 +61,8 @@ class SettingManager
     }
 
     /**
-     * @param Setting $subway
+     * @param Setting $setting
+     * @return bool
      */
     public function delete(Setting $setting)
     {

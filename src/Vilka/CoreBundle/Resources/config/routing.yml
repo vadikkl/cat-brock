@@ -4,9 +4,6 @@ vilka_core_homepage:
 vilka_control:
     resource: "@VilkaCoreBundle/Controller/AdminController.php"
     type:     annotation
-vilka_control_subway:
-    resource: "@VilkaCoreBundle/Controller/SubwayController.php"
-    type:     annotation
 vilka_control_setting:
     resource: "@VilkaCoreBundle/Controller/SettingController.php"
     type:     annotation

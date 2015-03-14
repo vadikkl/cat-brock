@@ -3,9 +3,12 @@
 namespace Vilka\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class UserRepository extends EntityRepository
 {
+    protected $_roleAdmin = 'ROLE_ADMIN';
+
     public function getList(
         $search,
         $page = 1,
@@ -32,20 +35,32 @@ class UserRepository extends EntityRepository
         $this->setFilters($query, $search);
         $pager['limit'] = $limit;
         $pager['count'] = $query->getQuery()->getSingleScalarResult();
+
         return $pager;
     }
 
+    public function count() {
+        $query = $this->createQueryBuilder('u')
+            ->select('COUNT(u)');
+        $query->andWhere('u.roles NOT LIKE :role')
+            ->setParameter('role', '%' . $this->_roleAdmin . '%');
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param QueryBuilder $query
+     * @param string $search
+     */
     private function setFilters(&$query, $search)
     {
-        /*$query->where('u.roles NOT LIKE :role')
-            ->setParameter('role', '%ROLE_ADMIN%');*/
         if ($search) {
-            $query = $query->where('u.username LIKE :search')
+            $query->Where('u.username LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
-            $query = $query->orWhere('u.email LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
-            $query = $query->orWhere('u.roles LIKE :search')
+            $query->orWhere('u.email LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
         }
+        $query->andWhere('u.roles NOT LIKE :role')
+            ->setParameter('role', '%' . $this->_roleAdmin . '%');
     }
 }

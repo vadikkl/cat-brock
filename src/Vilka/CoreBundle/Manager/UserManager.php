@@ -21,7 +21,7 @@ class UserManager
      * @param EntityManager $entityManager
      *
      * @DI\InjectParams({
-     *      "entityManager"                = @DI\Inject("doctrine.orm.entity_manager")
+     *      "entityManager" = @DI\Inject("doctrine.orm.entity_manager")
      * })
      */
     public function __construct(EntityManager $entityManager)
@@ -38,9 +38,25 @@ class UserManager
     {
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
+        $user->setEnabled((bool)$data['enabled']);
         if ($data['password']) {
             $user->setPassword($user->setPlainPassword($data['password']));
         }
+        return $this->save($user);
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function create($data)
+    {
+        $user = new User();
+        $user->setUsername($data['username']);
+        $user->setEmail($data['email']);
+        $user->setPassword($user->setPlainPassword($data['password']));
+        $user->setRoles(array("ROLE_USER"));
+        $user->setEnabled((bool)$data['enabled']);
         return $this->save($user);
     }
 
@@ -59,5 +75,23 @@ class UserManager
         }
 
         return true;
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function delete(User $user)
+    {
+        try {
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
+        } catch (Exception $e) {
+
+            return false;
+        }
+
+        return true;
+
     }
 }

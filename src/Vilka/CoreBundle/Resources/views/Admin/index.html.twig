@@ -1,5 +1,33 @@
 {% extends 'VilkaCoreBundle::layout.html.twig' %}
-
 {% block content %}
-hello
+<div class="row">
+    <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="main-box infographic-box">
+            <i class="fa fa-user"></i>
+            <span class="headline">Пользователи</span>
+            <span class="value">{{ users }}</span>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="main-box infographic-box">
+            <i class="fa fa-shopping-cart red"></i>
+            <span class="headline">Onliner.by</span>
+            <span class="value">{{ onliner }}</span>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="main-box infographic-box">
+            <i class="fa fa-shopping-cart yellow"></i>
+            <span class="headline">1K.by</span>
+            <span class="value">{{ one }}</span>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="main-box infographic-box">
+            <i class="fa fa-shopping-cart green"></i>
+            <span class="headline">Shop.by</span>
+            <span class="value">{{ shop }}</span>
+        </div>
+    </div>
+</div>
 {% endblock %}

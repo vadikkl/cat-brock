@@ -22,7 +22,7 @@
                             <div id="login-box-inner">
                                 <div id="login-logo">
                                     {#<img src="{{ asset('bundles/vilkacore/img/logo-login.png') }}" alt=""/> #}
-                                    Parser
+                                    {{ app.session.get('settings').site_name }}
                                 </div>
 
                                 {% if error %}
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="checkbox">
-                                            <label><input type="checkbox"> Запомнить меня</label>
+                                            <label><input type="checkbox" id="remember_me" name="_remember_me"> Запомнить меня</label>
                                         </div>
                                     </div>
                                     <div class="row">

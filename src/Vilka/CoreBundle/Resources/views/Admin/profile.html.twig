@@ -1,7 +1,7 @@
 {% extends 'VilkaCoreBundle::layout.html.twig' %}
 {% block title %}Профиль {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 {% block content %}
-    <h1>User Profile</h1>
+    <h1>Профиль</h1>
     <div class="row" id="user-profile">
         <div class="col-lg-3 col-md-4 col-sm-4">
             <div class="main-box clearfix">
@@ -23,7 +23,7 @@
         <div class="col-lg-9 col-md-8 col-sm-8">
             <div class="main-box clearfix">
                 <div class="profile-header">
-                    <h3><span>User info</span></h3>
+                    <h3><span>Информация о пользователе</span></h3>
                     <a href="{{ path('vilka_control_profile_edit') }}" class="btn btn-primary edit-profile">
                         <i class="fa fa-pencil-square fa-lg"></i>
                         Редактирование профиля
@@ -34,7 +34,7 @@
                     <div class="col-sm-12">
                         <div class="profile-user-details clearfix">
                             <div class="profile-user-details-label">
-                                Username
+                                Имя
                             </div>
                             <div class="profile-user-details-value">
                                 {{ app.user.username }}
@@ -50,7 +50,7 @@
                         </div>
                         <div class="profile-user-details clearfix">
                             <div class="profile-user-details-label">
-                                Last login
+                                Последний вход
                             </div>
                             <div class="profile-user-details-value">
                                 {{ app.user.lastLogin|date('Y-m-d H:i:s') }}

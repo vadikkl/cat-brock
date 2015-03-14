@@ -73,7 +73,7 @@ class SettingController extends AdvancedController
                 } else {
                     $this->get('session')->getFlashBag()->add(
                         'danger',
-                        'Настройка при создании'
+                        'Ошибка при создании'
                     );
                 }
                 return $this->redirect($this->generateUrl('vilka_control_setting'));

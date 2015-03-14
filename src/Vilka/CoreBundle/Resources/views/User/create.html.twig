@@ -1,6 +1,6 @@
 {% extends 'VilkaCoreBundle::layout.html.twig' %}
 {% set is_book = true %}
-{% block title %}Создание настройки {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
+{% block title %}Создание пользователя {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 
 {% block content %}
 
@@ -9,21 +9,32 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="main-box">
-                        <h2>Создание настройки</h2>
+                        <h2>Создание пользователя</h2>
                         {{ form_start(form) }}
-                        <div class="errors">{{ form_errors(form) }}</div>
-                        {{ form_widget(form._token) }}
+                        {{ form_errors(form) }}
                         <div class="form-group">
-                            {{ form_label(form.name, 'Идентификатор') }}
-                            {{ form_widget(form.name, { 'attr': {'class': 'form-control', 'placeholder': 'Введите идентификатор'} }) }}
+                            {{ form_label(form.username, 'Имя пользователя') }}
+                            {{ form_widget(form.username, { 'attr': {'class': 'form-control', 'placeholder': 'Введите имя пользователя'} }) }}
+                            {{ form_errors(form.username) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(form.value, 'Значение') }}
-                            {{ form_widget(form.value, { 'attr': {'class': 'form-control', 'placeholder': 'Введите значение'} }) }}
+                            {{ form_label(form.email, 'Email') }}
+                            {{ form_widget(form.email, { 'attr': {'class': 'form-control', 'placeholder': 'Введите email'} }) }}
+                            {{ form_errors(form.email) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(form.description, 'Описание') }}
-                            {{ form_widget(form.description, { 'attr': {'class': 'form-control', 'placeholder': 'Описание'} }) }}
+                            {{ form_label(form.password, 'Пароль') }}
+                            {{ form_widget(form.password, { 'attr': {'class': 'form-control', 'placeholder': 'Введите пароль'} }) }}
+                            {{ form_errors(form.password) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.password_confirm, 'Подтверждение пароля') }}
+                            {{ form_widget(form.password_confirm, { 'attr': {'class': 'form-control', 'placeholder': 'Повторите пароль'} }) }}
+                            {{ form_errors(form.password_confirm) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.enabled, 'Активен') }}
+                            {{ form_widget(form.enabled, { 'attr': {'class': 'form-control enabled'} }) }}
                         </div>
                         <div class="form-group">
                             {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-success'} }) }}

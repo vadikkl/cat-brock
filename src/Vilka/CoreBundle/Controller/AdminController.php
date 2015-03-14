@@ -20,7 +20,15 @@ class AdminController extends AdvancedController
      */
     public function indexAction()
     {
-        return array();
+        $userRepository = $this->getUserRepository();
+        $users = $userRepository->count();
+
+        return array(
+            'users' => $users,
+            'onliner' => 200,
+            'one' => 200,
+            'shop' => 200,
+        );
     }
 
     /**
@@ -58,29 +66,58 @@ class AdminController extends AdvancedController
     public function profile_editAction(Request $request)
     {
         $form = $this->createForm(new AdminType());
-        $form->get('username')->setData($this->getUser()->getUsername());
-        $form->get('email')->setData($this->getUser()->getEmail());
+        $user = $this->getUser();
+        $form->get('username')->setData($user->getUsername());
+        $form->get('email')->setData($user->getEmail());
+        $form->get('enabled')->setData(true);
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                if ($data['password'] === $data['password_confirm']) {
-                    $userManager = $this->getUserManager();
-                    if ($userManager->update($data, $this->getUser())) {
-                        $this->get('session')->getFlashBag()->add(
-                            'success',
-                            'Профиль успешно сохранен'
-                        );
-                    }
-                    return $this->redirect($this->generateUrl('vilka_control_profile'));
-
+                $manager = $this->getUserManager();
+                $userRepository = $this->getUserRepository();
+                $error = false;
+                $userExist = $userRepository->findOneByUsername($data['username']);
+                if ($userExist && ($user->getId() != $userExist->getId())) {
+                    $this->get('session')->getFlashBag()->add(
+                        'danger',
+                        'Пользователь с таким именем уже существует'
+                    );
+                    $error = true;
                 }
-                $this->get('session')->getFlashBag()->add(
-                    'danger',
-                    'Пароли не совпадают'
-                );
+                $userExist = $userRepository->findOneByEmail($data['email']);
+                if ($userExist && ($user->getId() != $userExist->getId())) {
+                    $this->get('session')->getFlashBag()->add(
+                        'danger',
+                        'Пользователь с таким email уже существует'
+                    );
+                    $error = true;
+                }
+                if ($data['password'] === $data['password_confirm']) {
+                    if (!$error) {
+                        if ($manager->update($data, $user)) {
+                            $this->get('session')->getFlashBag()->add(
+                                'success',
+                                'Профиль успешно сохранен'
+                            );
+                            $this->get('session')->set('settings', null);
+                        } else {
+                            $this->get('session')->getFlashBag()->add(
+                                'danger',
+                                'Ошибка при создании'
+                            );
+                        }
+                        return $this->redirect($this->generateUrl('vilka_control_profile'));
+                    }
+                } else {
+                    $this->get('session')->getFlashBag()->add(
+                        'danger',
+                        'Пароли не совпадают'
+                    );
+                }
             }
         }
+
         return array(
             'form' => $form->createView()
         );

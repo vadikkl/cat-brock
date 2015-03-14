@@ -47,7 +47,11 @@ class AdminType extends AbstractType
                 'attr' => array('class' => 'form-control')
             )
         );
-        $builder->add('submit', 'submit');
+        $builder->add(
+            'enabled',
+            'hidden'
+        );
+        $builder->add('submit', 'submit', array('label' => 'Cохранить'));
     }
 
     /**

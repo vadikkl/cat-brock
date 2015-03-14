@@ -10,6 +10,7 @@
                         <h2>Редактирование профиля</h2>
                         {{ form_start(form) }}
                         {{ form_errors(form) }}
+                        <input type="hidden" name="enabled" value="1" />
                         <div class="form-group">
                             {{ form_label(form.username, 'Имя пользователя') }}
                             {{ form_widget(form.username, { 'attr': {'class': 'form-control', 'placeholder': 'Введите имя пользователя'} }) }}
