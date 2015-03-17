@@ -1,6 +1,6 @@
 <?php
 
-namespace Vilka\CoreBundle\Entity;
+namespace Vilka\CoreBundle\Repository;
 
 /**
  * CatalogRepository
@@ -10,4 +10,13 @@ namespace Vilka\CoreBundle\Entity;
  */
 class CatalogRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getCountByPlatform($platform)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('COUNT(c)');
+        $query->where('c.platform = :platform')
+            ->setParameter('platform', $platform);
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
 }

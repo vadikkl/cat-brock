@@ -157,7 +157,7 @@ class UserController extends AdvancedController
                                 if ($manager->update($data, $user)) {
                                     $this->get('session')->getFlashBag()->add(
                                         'success',
-                                        'Пользователь успешно создан'
+                                        'Пользователь успешно сохранен'
                                     );
                                     $this->get('session')->set('settings', null);
                                 } else {

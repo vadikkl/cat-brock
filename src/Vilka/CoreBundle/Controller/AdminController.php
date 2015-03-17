@@ -22,12 +22,16 @@ class AdminController extends AdvancedController
     {
         $userRepository = $this->getUserRepository();
         $users = $userRepository->count();
+        $catalogRepository = $this->getCatalogRepository();
+        $onliner = $catalogRepository->getCountByPlatform('onliner.by');
+        $one = $catalogRepository->getCountByPlatform('1k.by');
+        $shop = $catalogRepository->getCountByPlatform('shop.by');
 
         return array(
             'users' => $users,
-            'onliner' => 200,
-            'one' => 200,
-            'shop' => 200,
+            'onliner' => $onliner,
+            'one' => $one,
+            'shop' => $shop,
         );
     }
 

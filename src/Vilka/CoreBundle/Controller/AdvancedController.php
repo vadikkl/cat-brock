@@ -7,14 +7,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Vilka\CoreBundle\Manager\RestaurantManager;
 use Vilka\CoreBundle\Manager\SettingManager;
-use Vilka\CoreBundle\Manager\SubwayManager;
 use Vilka\CoreBundle\Manager\UserManager;
+use Vilka\CoreBundle\Repository\CatalogRepository;
 use Vilka\CoreBundle\Repository\SettingRepository;
 use Vilka\CoreBundle\Repository\UserRepository;
 use Vilka\CoreBundle\Repository\RestaurantRepository;
-use Vilka\CoreBundle\Repository\SubwayRepository;
 
 class AdvancedController extends Controller
 {
@@ -102,14 +100,6 @@ class AdvancedController extends Controller
     }
 
     /**
-     * @return SubwayManager
-     */
-    public function getSubwayManager()
-    {
-        return $this->get('vilka.manager.subway');
-    }
-
-    /**
      * @return UserRepository
      */
     public function getUserRepository()
@@ -118,27 +108,19 @@ class AdvancedController extends Controller
     }
 
     /**
+     * @return CatalogRepository
+     */
+    public function getCatalogRepository()
+    {
+        return $this->getRepository('Catalog');
+    }
+
+    /**
      * @return SettingRepository
      */
     public function getSettingRepository()
     {
         return $this->getRepository('Setting');
-    }
-
-    /**
-     * @return SubwayRepository
-     */
-    public function getSubwayRepository()
-    {
-        return $this->getRepository('Subway');
-    }
-
-    /**
-     * @return RestaurantManager
-     */
-    public function getRestaurantManager()
-    {
-        return $this->get('vilka.manager.restaurant');
     }
 
     /**

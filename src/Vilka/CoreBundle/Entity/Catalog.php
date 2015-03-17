@@ -7,7 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Catalog
  *
- * @ORM\Table(name="catalog")
+ * @ORM\Table(name="catalog", uniqueConstraints={
+ *  @ORM\UniqueConstraint(columns={"id"})}, indexes={
+ *  @ORM\Index(name="category_idx", columns={"category"}),
+ *  @ORM\Index(name="offer_idx", columns={"offer"}),
+ *  @ORM\Index(name="platform_idx", columns={"platform"}),
+ *  @ORM\Index(name="price_idx", columns={"price"}),
+ *  @ORM\Index(name="category_offer_platform_price_idx", columns={"category","offer","platform","price"})
+ * })
  * @ORM\Entity(repositoryClass="Vilka\CoreBundle\Repository\CatalogRepository")
  */
 class Catalog
@@ -24,7 +31,7 @@ class Catalog
     /**
      * @var string
      *
-     * @ORM\Column(name="source", type="string", length=500)
+     * @ORM\Column(name="source", type="string", length=255)
      */
     private $source;
 

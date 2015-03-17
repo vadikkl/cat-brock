@@ -45,6 +45,7 @@ class CommandOutput extends ContainerAwareCommand
             foreach ($styles as $key => $style) {
                 $output->getFormatter()->setStyle($key, $style);
             }
+            $output->writeln('');
             $output->writeln('<success>                          Parser Console                          </success>');
             $output->writeln('');
 
