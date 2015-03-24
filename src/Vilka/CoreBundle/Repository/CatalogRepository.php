@@ -10,6 +10,10 @@ namespace Vilka\CoreBundle\Repository;
  */
 class CatalogRepository extends \Doctrine\ORM\EntityRepository
 {
+    protected $enter = "\r\n";
+    protected $separator = ",";
+    protected $quote = '"';
+
     public function getCountByPlatform($platform)
     {
         $query = $this->createQueryBuilder('c')
@@ -18,5 +22,88 @@ class CatalogRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('platform', $platform);
 
         return $query->getQuery()->getSingleScalarResult();
+    }
+
+    public function getOffersByPlatform($platform)
+    {
+        $query = $this->createQueryBuilder('c');
+        $query->select('c.offer');
+        $query->where('c.platform = :platform')
+            ->setParameter('platform', $platform)
+            ->groupBy('c.offer')
+            ->orderBy('c.offer')
+        ;
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function getCategoriesByPlatform($platform)
+    {
+        $query = $this->createQueryBuilder('c');
+        $query->select('c.category');
+        $query->where('c.platform = :platform')
+            ->setParameter('platform', $platform)
+            ->groupBy('c.category')
+            ->orderBy('c.category')
+        ;
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function getProducts($platform, $offers, $categories, $user)
+    {
+        $query = $this->createQueryBuilder('c');
+        $query->select('c');
+        $query->where('c.platform = :platform')
+            ->setParameter('platform', $platform);
+        if ($offers) {
+            $query->andWhere('c.offer IN (:offers)')
+                ->setParameter('offers', $offers);
+        }
+        if ($categories) {
+            $query->andWhere('c.category = :categories')
+                ->setParameter('categories', $categories);
+        }
+
+        return $this->_createCSV($query->getQuery()->getArrayResult(), $platform, $user);
+    }
+
+    private function _createCSV($output, $source, $user)
+    {
+        $count = count($output);
+        if ($count) {
+            $csvData = '';
+            foreach ($output as $key => $_line) {
+                $csvData .= $this->quote . $_line["source"] . $this->quote . $this->separator
+                    . $this->quote . $_line["category"] . $this->quote . $this->separator
+                    . $this->quote . $_line["offer"] . $this->quote . $this->separator
+                    . $this->quote . $_line["article"] . $this->quote . $this->separator
+                    . $this->quote . $_line["name"] . $this->quote . $this->separator
+                    . $this->quote . $_line["price"] . $this->quote . $this->separator
+                    . $this->quote . $_line["beznal"] . $this->quote;
+                $csvData .= $this->enter;
+            }
+            $directory = getcwd() . "/files/" . md5($user->getId().$user->getSalt());
+            if (!is_dir($directory)) {
+                mkdir($directory);
+            }
+            $fileName = $directory . "/" . $source . '_' . date('Y-m-d_h:i:s') . ".csv";
+            $handle = fopen($fileName, "a+");
+            fwrite($handle, $csvData);
+            fclose($handle);
+            if (file_exists($fileName)) {
+                header('Content-Description: File Transfer');
+                header("Content-type: application/octet-stream");
+                header('Content-Disposition: attachment; filename=' . basename($fileName));
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($fileName));
+                readfile($fileName);
+                exit;
+            }
+        } else {
+            return false;
+        }
     }
 }

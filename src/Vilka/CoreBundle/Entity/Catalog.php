@@ -19,6 +19,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Catalog
 {
+    static public $PLATFORMS = array(
+        'onliner.by' => 'onliner.by',
+        '1k.by' => '1k.by',
+        'shop.by' => 'shop.by'
+    );
     /**
      * @var integer
      *

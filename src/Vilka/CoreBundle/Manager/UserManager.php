@@ -84,6 +84,8 @@ class UserManager
     public function delete(User $user)
     {
         try {
+            $directory = getcwd() . "/files/" . md5($user->getId().$user->getSalt());
+            system("rm -rf ".escapeshellarg($directory));
             $this->entityManager->remove($user);
             $this->entityManager->flush();
         } catch (Exception $e) {
