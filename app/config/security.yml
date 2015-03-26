@@ -24,7 +24,9 @@ security:
                 lifetime: 31536000 # 365 days in seconds
                 path:     /
                 domain:   ~ # Defaults to the current domain from $_SERVER
-
     access_control:
+
+        - { path: /control/setting, role: ROLE_ADMIN }
+        - { path: /control/user, role: ROLE_ADMIN }
         - { path: /control.*, role: ROLE_USER }
         - { path: /.*, role: IS_AUTHENTICATED_ANONYMOUSLY }

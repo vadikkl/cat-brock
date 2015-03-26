@@ -27,15 +27,15 @@ class User extends BaseUser
     /**
      *
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Restaurant", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="History", inversedBy="users")
      */
-    //protected $restaurants;
+    protected $histories;
 
-    /*public function __construct()
+    public function __construct()
     {
         parent::__construct();
-        $this->restaurants = new ArrayCollection();
-    }*/
+        $this->histories = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -50,35 +50,35 @@ class User extends BaseUser
 
 
     /**
-     * Add restaurants
+     * Add histories
      *
-     * @param \Vilka\CoreBundle\Entity\Restaurant $restaurants
+     * @param \Vilka\CoreBundle\Entity\History $histories
      * @return User
      */
-    /*public function addRestaurant(\Vilka\CoreBundle\Entity\Restaurant $restaurants)
+    public function addHistory(\Vilka\CoreBundle\Entity\History $histories)
     {
-        $this->restaurants[] = $restaurants;
+        $this->histories[] = $histories;
 
         return $this;
-    }*/
+    }
 
     /**
-     * Remove restaurants
+     * Remove histories
      *
-     * @param \Vilka\CoreBundle\Entity\Restaurant $restaurants
+     * @param \Vilka\CoreBundle\Entity\History $histories
      */
-    /*public function removeRestaurant(\Vilka\CoreBundle\Entity\Restaurant $restaurants)
+    public function removeHistory(\Vilka\CoreBundle\Entity\History $histories)
     {
-        $this->restaurants->removeElement($restaurants);
-    }*/
+        $this->histories->removeElement($histories);
+    }
 
     /**
-     * Get restaurants
+     * Get histories
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    /*public function getRestaurants()
+    public function getHistories()
     {
-        return $this->restaurants;
-    }*/
+        return $this->histories;
+    }
 }

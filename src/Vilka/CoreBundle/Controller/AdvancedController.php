@@ -7,9 +7,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Vilka\CoreBundle\Manager\HistoryManager;
 use Vilka\CoreBundle\Manager\SettingManager;
 use Vilka\CoreBundle\Manager\UserManager;
 use Vilka\CoreBundle\Repository\CatalogRepository;
+use Vilka\CoreBundle\Repository\HistoryRepository;
 use Vilka\CoreBundle\Repository\SettingRepository;
 use Vilka\CoreBundle\Repository\UserRepository;
 use Vilka\CoreBundle\Repository\RestaurantRepository;
@@ -67,6 +69,19 @@ class AdvancedController extends Controller
         return new JsonResponse(array(
             'url' => $url
         ));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -132,10 +147,18 @@ class AdvancedController extends Controller
     }
 
     /**
-     * @return RestaurantRepository
+     * @return HistoryRepository
      */
-    public function getRestaurantRepository()
+    public function getHistoryRepository()
     {
-        return $this->getRepository('Restaurant');
+        return $this->getRepository('History');
+    }
+
+    /**
+     * @return HistoryManager
+     */
+    public function getHistoryManager()
+    {
+        return $this->get('vilka.manager.history');
     }
 }

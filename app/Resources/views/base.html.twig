@@ -37,6 +37,28 @@
             <!-- theme scripts -->
             <script src="{{ asset('bundles/vilkacore/js/control.js') }}"></script>
             <script src="{{ asset('bundles/vilkacore/js/scripts.js') }}"></script>
+            <script src="{{ asset('bundles/vilkacore/js/raphael-min.js') }}"></script>
+            <script src="{{ asset('bundles/vilkacore/js/morris.min.js') }}"></script>
+            <script>
+                $(document).ready(function() {
+                    if (typeof stat_onliner !== 'undefined') {
+                        graphDonut = Morris.Donut({
+                            element: 'hero-donut',
+                            data: [
+                                {label: 'onliner.by', value: stat_onliner },
+                                {label: '1k.by', value: stat_one },
+                                {label: 'shop.by', value: stat_shop }
+                            ],
+                            colors: ['#fe635f', '#f1c40f', '#8dc859', '#8f44ad', '#626f70', '#8f44ad'],
+                            formatter: function (y) { return y }
+                        });
+
+                        $(window).smartresize(function(){
+                            graphDonut.redraw();
+                        });
+                    }
+                });
+            </script>
         {% endblock %}
     </body>
 </html>

@@ -13,6 +13,9 @@ vilka_control_user:
 vilka_control_catalog:
     resource: "@VilkaCoreBundle/Controller/CatalogController.php"
     type:     annotation
+vilka_control_history:
+    resource: "@VilkaCoreBundle/Controller/HistoryController.php"
+    type:     annotation
 
 _security_check:
     pattern:  /login_check

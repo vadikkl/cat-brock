@@ -1,6 +1,6 @@
 <header class="navbar" id="header-navbar">
     <div class="container">
-        <a href="{{ path('vilka_control_index') }}" id="logo" class="navbar-brand col-md-3 col-sm-3 col-xs-12">
+        <a href="{{ path('vilka_control_index') }}" id="logo" class="navbar-brand col-md-6 col-sm-6 col-xs-12">
             {#<img src="{{ asset('bundles/vilkacore/img/logo.png') }}" alt=""/> #}
             <span>{{ app.session.get('settings').site_name }} {{ app.session.get('settings').separator }} {{ app.session.get('settings').panel_name }}</span>
         </a>
@@ -146,11 +146,13 @@
                         {#</li>#}
                     {#</ul>#}
                 {#</li>#}
+                {% if is_granted('ROLE_ADMIN') %}
                 <li class="hidden-xs">
                     <a href="{{ path('vilka_control_setting') }}" class="btn">
                         <i class="fa fa-cog"></i>
                     </a>
                 </li>
+                {% endif %}
                 <li class="dropdown profile-dropdown">
                     <a href="{{ path('vilka_control_profile') }}" class="dropdown-toggle" data-toggle="dropdown">
                         <img width="35px" src="{{ asset('bundles/vilkacore/img/samples/no-logo.png') }}" alt=""/>
@@ -158,8 +160,9 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ path('vilka_control_profile') }}"><i class="fa fa-user"></i>Профиль</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
                         <li><a href="{{ path('vilka_control_setting') }}"><i class="fa fa-cog"></i>Настройки</a></li>
-                        {#<li><a href="#"><i class="fa fa-envelope-o"></i>Messages</a></li>#}
+                        {% endif %}
                         <li><a href="{{ path('_security_logout') }}"><i class="fa fa-power-off"></i>Выход</a></li>
                     </ul>
                 </li>

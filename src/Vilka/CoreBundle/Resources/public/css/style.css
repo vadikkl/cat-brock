@@ -2,3 +2,6 @@
     width: auto !important;
     outline: none;
 }
+.error {
+    color:red;
+}
