@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use Symfony\Component\Serializer\Exception\Exception;
 use Vilka\CoreBundle\Command\CommandOutput;
+use Vilka\CoreBundle\Entity\Log;
 
 /**
  *
@@ -38,7 +39,13 @@ class ParserCommand extends CommandOutput
 
     protected $catalogTable = null;
 
+    protected $logTable = 'log';
+
+    protected $logs = null;
+
     protected $entityManager = null;
+
+    protected $truncate = true;
 
     protected $total = 0;
 
@@ -80,7 +87,8 @@ class ParserCommand extends CommandOutput
     protected function configure()
     {
         $this->setName('parser:catalog:start', 'Start sites parser')
-            ->addOption('site', null, InputOption::VALUE_REQUIRED, 'Site url', 'onliner.by');
+            ->addOption('site', null, InputOption::VALUE_REQUIRED, 'Site url', 'onliner.by')
+            ->addOption('move', null, InputOption::VALUE_REQUIRED, 'Move data from temp table', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -88,6 +96,8 @@ class ParserCommand extends CommandOutput
         $this->load($output);
 
         $site = $input->getOption('site');
+
+        $move = $input->getOption('move');
 
         $this->sleep = $this->sleeps[$site];
 
@@ -97,7 +107,7 @@ class ParserCommand extends CommandOutput
         $this->connection = $this->entityManager->getConnection();
 
         $this->writeSuccessLine('Parsing ' . $site . ' start...');
-        $this->_getParser($site);
+        $this->_getParser($site, $move);
         $this->writeSuccessLine('Parsing ' . $site . ' finish.');
     }
 
@@ -109,18 +119,29 @@ class ParserCommand extends CommandOutput
         return $this->get('doctrine');
     }
 
-    public function _getParser($source)
+    public function _getParser($source, $move)
     {
         $this->catalogTable = $this->catalogTables[$source];
-        switch ($source) {
-            case 'onliner.by':
-                $this->_getOnlinerBy($source);
-                break;
-            case '1k.by':
-                $this->_getOneKBy($source);
-                break;
-            default:
-                break;
+        $logsRepository = $this->getRepository('Log');
+        $logsRepository->findByPlatform($source);
+        $logRes = $logsRepository->findByPlatform($source);
+        if ($logRes) {
+            $logRes = $logRes[0];
+            $this->logs = $logRes ? unserialize($logRes['params']) : null;
+            $this->truncate = false;
+        }
+        //var_dump($this->logs);
+        if (!$move) {
+            switch ($source) {
+                case 'onliner.by':
+                    $this->_getOnlinerBy($source);
+                    break;
+                case '1k.by':
+                    $this->_getOneKBy($source);
+                    break;
+                default:
+                    break;
+            }
         }
         $this->_copyTable($this->catalogTable, $this->defaultTable, $source);
     }
@@ -133,6 +154,7 @@ class ParserCommand extends CommandOutput
             $data = "source,category,offer,platform,article,name,price,beznal";
             $sql = "INSERT INTO " . $toTable . " (" . $data . ") SELECT " . $data . " FROM " . $fromTable;
             $this->connection->query($sql);
+            $this->connection->query("DELETE FROM " . $this->logTable . " WHERE platform='" . $source . "'");
             $this->connection->commit();
             $this->writeSuccessLine('Finished.');
         } catch (Exception $e) {
@@ -271,20 +293,44 @@ class ParserCommand extends CommandOutput
         foreach ($links as $link) {
             $_html = $this->_file_get_html($link);
             if ($_html) {
-                foreach ($_html->find('.main_page .b-catalogitems li') as $_category) {
+                foreach ($_html->find('.main_page .b-catalogitems li') as $_firstKey => $_category) {
+                    //$this->writeSuccessLine('first - '.$_firstKey);
+                    if ($this->logs && ($_firstKey < $this->logs['first'])) {
+                        continue;
+                    }
                     $category = $_category->plaintext;
-                    $categoryHref = $_category->find('a', 0)->href;
-                    $this->onlinerByIteration($category, $categoryHref, $link, $source);
+                    $categoryHref = $_category->find('a', 0)->href . '~add=0~sort_by=best~dir=asc~where=onsale~currency=BRB~city=minsk/';
+                    $this->onlinerByIteration($_firstKey, $category, $categoryHref, $link, $source);
                 }
             }
         }
     }
 
-    protected function onlinerByIteration($category, $href, $source, $platform)
+    protected function onlinerByIteration($_firstKey, $category, $href, $source, $platform, $page = 1)
     {
         $_html = $this->_file_get_html($href);
         if ($_html) {
-            foreach ($_html->find('form[name=product_list] tr') as $_product) {
+            if ($this->logs && ($page < $this->logs['page'])) {
+                $lastPage = $_html->find('.phed a', -2);
+                if ($lastPage) {
+                    $lastPage = $lastPage->plaintext;
+                    for ($i = $this->logs['page']; $i < $lastPage; $i++) {
+                        $pageHref = $href . '~add=0~sort_by=best~dir=asc~where=onsale~currency=BRB~city=minsk~page=' . $i . '/';
+                        $this->onlinerByIteration($_firstKey, $category, $pageHref, $source, $platform, $i);
+                    }
+                }
+                return;
+            }
+            foreach ($_html->find('form[name=product_list] tr') as $_secondKey => $_product) {
+                if ($this->logs && ($_secondKey <= $this->logs['second'])) {
+                    if ($_secondKey+1 == count($_html->find('form[name=product_list] tr') )) {
+                        $this->logs = null;
+                        $pageHref = $href . '~add=0~sort_by=best~dir=asc~where=onsale~currency=BRB~city=minsk~page=' . $page++ . '/';
+                        $this->onlinerByIteration($_firstKey, $category, $pageHref, $source, $platform, $page++);
+                    }
+                    continue;
+                }
+                $this->logs = null;
                 $isPrice = $_product->find('.poffers a', 0);
                 if ($isPrice) {
                     $productHref = $_product->find('.poffers a', 0)->href;
@@ -312,17 +358,27 @@ class ParserCommand extends CommandOutput
                                 $output[] = $this->_insertMysql($this->catalogTable, $bind);
                             }
                         }
+                        $logBinds = array(
+                            'params' => serialize(array(
+                                'first' => $_firstKey,
+                                'page' => $page,
+                                'second' => $_secondKey
+                            )),
+                            'platform' => $platform
+                        );
+                        $output[] = $this->_replaceMysql($this->logTable, $logBinds);
                         $this->_pushToDB($output);
                     }
                 }
+                $this->writeSuccessLine('Категория - ' . $_firstKey.'; Страница - '.$page.'; Продукт - '.$_secondKey);
             }
         }
-        $lastPage = (int)$_html->find('.phed a', -2);
+        $lastPage = $_html->find('.phed a', -2);
         if ($lastPage) {
             $lastPage = $lastPage->plaintext;
-            for ($i = 2; $i < $lastPage; $i++) {
-                $pageHref = $href . '~add=0~sort_by=best~dir=asc~where=actual~currency=BRB~city=minsk~page=' . $i . '/';
-                $this->onlinerByIteration($category, $pageHref, $source, $platform);
+            for ($i = $page+1; $i < $lastPage; $i++) {
+                $pageHref = $href . '~add=0~sort_by=best~dir=asc~where=onsale~currency=BRB~city=minsk~page=' . $i . '/';
+                $this->onlinerByIteration($_firstKey, $category, $pageHref, $source, $platform, $i);
             }
         }
     }
@@ -334,14 +390,14 @@ class ParserCommand extends CommandOutput
             $this->connection->beginTransaction();
             $this->writeSuccessLine('Start transaction...');
             try {
-                if (!$this->total) {
+                if (!$this->total && $this->truncate) {
                     $this->connection->query('TRUNCATE '.$this->catalogTable);
                 }
                 foreach ($queries as $query) {
                     $this->connection->query($query);
                 }
                 $this->connection->commit();
-                $this->total += $count;
+                $this->total += $count-1;
                 $this->writeSuccessLine('Finished commiting transactions (' . $count . ')...');
                 $this->writeSuccessLine('Total: ' . $this->total);
             } catch (Exception $e) {
@@ -362,6 +418,14 @@ class ParserCommand extends CommandOutput
         $this->writeLine($replaceVal);
 
         return 'INSERT INTO `' . $table . '` (' . $replaceKeys . ') VALUES (' . $replaceVal . ')';
+    }
+
+    private function _replaceMysql($table, $bind)
+    {
+        $replaceKeys = implode(', ', array_keys($bind));
+        $replaceVal = implode(', ', $this->_wrapQuotes($bind, "'"));
+
+        return 'REPLACE INTO `' . $table . '` (' . $replaceKeys . ') VALUES (' . $replaceVal . ')';
     }
 
     protected function _wrapQuotes($arrayValues, $quote = "")
