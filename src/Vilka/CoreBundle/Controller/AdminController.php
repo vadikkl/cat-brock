@@ -60,7 +60,11 @@ class AdminController extends AdvancedController
      */
     public function profileAction()
     {
-        return array();
+        $files = $this->getFileRepository()->getAll();
+
+        return array(
+            'links' => $files
+        );
     }
 
     /**

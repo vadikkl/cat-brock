@@ -15,19 +15,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    {% if all_offers|length %}
-                        <div class="form-group">
-                            <label class="required">Магазины</label>
-                            {% for offer in all_offers %}
-                                <label class="col-sm-4">
-                                    <input type="checkbox" name="offers[]" value="{{ offer.offer }}"> {{ offer.offer|replace({'&quot;': '"'}) }}
-                                </label>
-                            {% endfor %}
-                        </div>
-                        <div class="form-group">
-                            &nbsp;
-                        </div>
-                    {% endif %}
                     {% if all_categories|length %}
                         <div class="form-group">
                             <label class="required">Категории</label>
@@ -41,11 +28,22 @@
                             &nbsp;
                         </div>
                     {% endif %}
+                    {% if all_offers|length %}
+                        <div class="form-group">
+                            <label class="required">Магазины</label>
+                            {% for offer in all_offers %}
+                                <label class="col-sm-4">
+                                    <input type="checkbox" name="offers[]" value="{{ offer.offer }}"> {{ offer.offer|replace({'&quot;': '"'}) }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            &nbsp;
+                        </div>
+                    {% endif %}
                     <div class="form-group">
                         {% if (app.request.get('platform')) %}
                             <button class="btn btn-success" name="export" type="submit">Выгрузить</button>
-                        {% else %}
-                            <button class="btn btn-success" name="submit" type="submit">Далее</button>
                         {% endif %}
                     </div>
                 </form>

@@ -11,6 +11,7 @@ use Vilka\CoreBundle\Manager\HistoryManager;
 use Vilka\CoreBundle\Manager\SettingManager;
 use Vilka\CoreBundle\Manager\UserManager;
 use Vilka\CoreBundle\Repository\CatalogRepository;
+use Vilka\CoreBundle\Repository\FileRepository;
 use Vilka\CoreBundle\Repository\HistoryRepository;
 use Vilka\CoreBundle\Repository\SettingRepository;
 use Vilka\CoreBundle\Repository\UserRepository;
@@ -136,6 +137,14 @@ class AdvancedController extends Controller
     public function getSettingRepository()
     {
         return $this->getRepository('Setting');
+    }
+
+    /**
+     * @return FileRepository
+     */
+    public function getFileRepository()
+    {
+        return $this->getRepository('File');
     }
 
     /**

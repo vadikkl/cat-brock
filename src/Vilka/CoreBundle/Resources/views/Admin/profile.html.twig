@@ -56,6 +56,35 @@
                                 {{ app.user.lastLogin|date('Y-m-d H:i:s') }}
                             </div>
                         </div>
+                        <div class="profile-user-details clearfix">
+                            <div class="profile-user-details-label">
+                                &nbsp;
+                            </div>
+                            <div class="profile-user-details-value">
+                                &nbsp;
+                            </div>
+                        </div>
+                        {% if links|length %}
+                            {% for file in links %}
+                                <div class="profile-user-details clearfix">
+                                    <div class="profile-user-details-label">
+                                        {{ file.platform }}<br>
+                                        <i style="font-weight: normal;"><small><small>{{ file.date|date('Y-m-d H:i:s') }}</small></small></i>
+                                    </div>
+                                    <div class="profile-user-details-value">
+                                        <input type="text" class="form-control" value="{{ app.request.getSchemeAndHttpHost() }}/{{ file.link }}">
+                                    </div>
+                                </div>
+                                <div class="profile-user-details clearfix">
+                                    <div class="profile-user-details-label">
+                                        &nbsp;
+                                    </div>
+                                    <div class="profile-user-details-value">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>

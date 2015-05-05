@@ -35,7 +35,7 @@ class CatalogRepository extends \Doctrine\ORM\EntityRepository implements Contai
             ->select('COUNT(c)');
         $query->where('c.platform = :platform')
             ->setParameter('platform', $platform);
-
+        $this->_setLastDate($query);
         return $query->getQuery()->getSingleScalarResult();
     }
 
@@ -48,7 +48,7 @@ class CatalogRepository extends \Doctrine\ORM\EntityRepository implements Contai
             ->groupBy('c.offer')
             ->orderBy('c.offer')
         ;
-
+        $this->_setLastDate($query);
         return $query->getQuery()->getResult();
     }
 
@@ -61,8 +61,19 @@ class CatalogRepository extends \Doctrine\ORM\EntityRepository implements Contai
             ->groupBy('c.category')
             ->orderBy('c.category')
         ;
-
+        $this->_setLastDate($query);
         return $query->getQuery()->getResult();
+    }
+
+    protected function _setLastDate(&$query) {
+        $queryDate = $this->createQueryBuilder('c')
+            ->select('c.date')->orderBy('c.date', 'DESC');
+        $queryDate = $queryDate->setMaxResults(1)->setFirstResult(1);
+        $result = $queryDate->getQuery()->getSingleScalarResult();
+        if ($result) {
+            $query->andWhere('c.date = :query')
+                ->setParameter('query', $result);
+        }
     }
 
     public function getProducts($platform, $offers, $categories, $user)
@@ -79,7 +90,7 @@ class CatalogRepository extends \Doctrine\ORM\EntityRepository implements Contai
             $query->andWhere('c.category IN (:categories)')
                 ->setParameter('categories', $categories);
         }
-
+        $this->_setLastDate($query);
         return $this->_createCSV($query->getQuery()->getArrayResult(), $platform, $offers, $categories, $user);
     }
 

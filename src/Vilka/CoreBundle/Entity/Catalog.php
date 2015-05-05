@@ -13,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  *  @ORM\Index(name="offer_idx", columns={"offer"}),
  *  @ORM\Index(name="platform_idx", columns={"platform"}),
  *  @ORM\Index(name="price_idx", columns={"price"}),
- *  @ORM\Index(name="category_offer_platform_price_idx", columns={"category","offer","platform","price"})
+ *  @ORM\Index(name="date_idx", columns={"date"}),
+ *  @ORM\Index(name="category_offer_platform_price_date_idx", columns={"category","offer","platform","price", "date"})
  * })
  * @ORM\Entity(repositoryClass="Vilka\CoreBundle\Repository\CatalogRepository")
  */
@@ -88,6 +89,13 @@ class Catalog
      * @ORM\Column(name="beznal", type="boolean")
      */
     private $beznal;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
 
 
     /**
@@ -290,6 +298,30 @@ class Catalog
     public function getBeznal()
     {
         return $this->beznal;
+    }
+
+    /**
+     * Set date
+     *
+     * @param integer $date
+     *
+     * @return History
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return integer
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }
 
