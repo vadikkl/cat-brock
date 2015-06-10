@@ -35,7 +35,7 @@ class CatalogRepository extends \Doctrine\ORM\EntityRepository implements Contai
             ->select('COUNT(c)');
         $query->where('c.platform = :platform')
             ->setParameter('platform', $platform);
-        $this->_setLastDate($query);
+        $this->_setLastDate($query, $platform);
         return $query->getQuery()->getSingleScalarResult();
     }
 
@@ -48,7 +48,7 @@ class CatalogRepository extends \Doctrine\ORM\EntityRepository implements Contai
             ->groupBy('c.offer')
             ->orderBy('c.offer')
         ;
-        $this->_setLastDate($query);
+        $this->_setLastDate($query, $platform);
         return $query->getQuery()->getResult();
     }
 
@@ -61,18 +61,20 @@ class CatalogRepository extends \Doctrine\ORM\EntityRepository implements Contai
             ->groupBy('c.category')
             ->orderBy('c.category')
         ;
-        $this->_setLastDate($query);
+        $this->_setLastDate($query, $platform);
         return $query->getQuery()->getResult();
     }
 
-    protected function _setLastDate(&$query) {
+    protected function _setLastDate(&$query, $platform) {
         $queryDate = $this->createQueryBuilder('c')
             ->select('c.date')->orderBy('c.date', 'DESC');
-        $queryDate = $queryDate->setMaxResults(1)->setFirstResult(1);
-        $result = $queryDate->getQuery()->getSingleScalarResult();
+        $queryDate->where('c.platform = :platform')
+            ->setParameter('platform', $platform);
+        $queryDate = $queryDate->setMaxResults(1);
+        $result = $queryDate->getQuery()->getOneOrNullResult();
         if ($result) {
             $query->andWhere('c.date = :query')
-                ->setParameter('query', $result);
+                ->setParameter('query', $result['date']->format('Y-m-d H:i:s'));
         }
     }
 
@@ -90,7 +92,7 @@ class CatalogRepository extends \Doctrine\ORM\EntityRepository implements Contai
             $query->andWhere('c.category IN (:categories)')
                 ->setParameter('categories', $categories);
         }
-        $this->_setLastDate($query);
+        $this->_setLastDate($query, $platform);
         return $this->_createCSV($query->getQuery()->getArrayResult(), $platform, $offers, $categories, $user);
     }
 

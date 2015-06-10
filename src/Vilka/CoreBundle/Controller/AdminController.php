@@ -49,7 +49,7 @@ class AdminController extends AdvancedController
         }
 
         return $this->render('VilkaCoreBundle:Admin:login.html.twig', array(
-            'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
+            'last_email' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
             'error' => $error
         ));
     }

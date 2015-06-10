@@ -90,7 +90,7 @@ class ParserCommand extends CommandOutput
     protected $sleeps = array(
         'onliner.by' => 1,
         '1k.by' => 5,
-        'shop.by' => 1
+        'shop.by' => 2
     );
 
 
@@ -180,7 +180,7 @@ class ParserCommand extends CommandOutput
             $fileSql = $this->_createCSV($query, $source, $toTable, $date);
             $this->connection->beginTransaction();
             $this->writeSuccessLine('Start transaction...');
-            //$this->connection->query("DELETE FROM " . $toTable . " WHERE platform='" . $source . "'");
+            $this->connection->query("DELETE FROM " . $toTable . " WHERE platform='" . $source . "'");
             $sql = "INSERT INTO " . $toTable . " (" . $data . ",date) ";
             $sql .= "SELECT " . $data . ",'" . $date . "' FROM " . $fromTable;
             $this->connection->query($sql);
@@ -250,9 +250,21 @@ class ParserCommand extends CommandOutput
         return $sql;
     }
 
+    private function _log($message, $source)
+    {
+        $date = date('Y-m-d H:i:s');
+        $fileName = getcwd() . "/app/logs/" . $source . ".log";
+        $message = $date . ":  " . $message . $this->enter;
+        $handle = fopen($fileName, "a+");
+        fwrite($handle, $message);
+        fclose($handle);
+    }
+
     protected function _replaceQuote($text)
     {
         $text = str_replace('&nbsp;', ' ', $text);
+        $text = str_replace("'", '&#39;', $text);
+        $text = str_replace("\\", '&#92;', $text);
         return trim(str_replace('"', '&quot;', $text));
     }
 
@@ -280,6 +292,7 @@ class ParserCommand extends CommandOutput
             $_html = $this->_file_get_html($link);
             if ($_html) {
                 foreach ($_html->find('.Page__ElementPageCatalog a') as $_firstKey => $_category) {
+                    $this->_log($_firstKey . ' - ' . $_category->plaintext, $source);
                     if ($this->logs && ($_firstKey < $this->logs['first'])) {
                         continue;
                     }
@@ -288,6 +301,110 @@ class ParserCommand extends CommandOutput
             }
         }
         $this->_pushToDB(true);
+    }
+
+
+    private function _shopByIteration($_firstKey, $source, $categoryTitle, $categoryHref, $page = 1, $postfix = '') {
+        if ($this->logs && ($page < $this->logs['page'])) {
+            $postfix = '?page_id='.$this->logs['page'].'&amp;page_size=20&amp;currency=BYB&amp;sort=popularity--number&amp;to_order=1';
+            $this->_shopByIteration($_firstKey, $source, $categoryTitle, $categoryHref, $this->logs['page'], $postfix);
+            return;
+        }
+        $shopsUrl = 'http://shop.by/model/shop/';
+        $shopsUrlPost = '/?page_size=100&page_id=1';
+        $_html = $this->_file_get_html($categoryHref . $postfix);
+        if ($_html) {
+            foreach ($_html->find('.ModelList__ModelBlockRow') as $_secondKey => $_product) {
+                if ($this->logs && ($_secondKey <= $this->logs['second'])) {
+                    if ($_secondKey+1 == count($_html->find('.ModelList__ModelBlockRow'))) {
+                        $this->logs = null;
+                        $page++;
+                        $postfix = '?page_id='.$page.'&amp;page_size=20&amp;currency=BYB&amp;sort=popularity--number&amp;to_order=1';
+                        $this->_shopByIteration($_firstKey, $source, $categoryTitle, $categoryHref, $page, $postfix);
+                    }
+                    continue;
+                }
+                $this->logs = null;
+                $shopHref = $_product->find('.ModelList__InfoModelBlock a', 2);
+                if ($shopHref) {
+                    $productName = $_product->find('.ModelList__NameBlock a span', 0)->plaintext;
+                    $shopHrefArr = array_reverse(explode('/', $shopHref->href));
+                    $productLink = $shopsUrl . $shopHrefArr[1] . $shopsUrlPost;
+                    $html = $this->_file_get_html($productLink);
+                    if ($html) {
+                        foreach ($html->find('.ShopItemList__ItemBlockRow') as $shop) {
+                            $bind = array(
+                                'source' => $this->_replaceQuote('http://' . $source .$shopHref->href),
+                                'category' => $this->_replaceQuote($categoryTitle),
+                                'article' => $this->_replaceQuote($shopHrefArr[1]),
+                                'name' => $this->_replaceQuote($productName),
+                                'price' => $this->_replacePrice($shop->find('.PriceBlock__PriceFirst span', 0)->plaintext),
+                                'beznal' => 0,
+                                'platform' => $source,
+                                'offer' => $this->_replaceQuote($shop->find('.ShopItemList__BlockShopLink a', 0)->plaintext)
+                            );
+                            $this->queries[] = $this->_insertMysql($this->catalogTable, $bind);
+                        }
+                    }
+                    $logs = array(
+                        'platform' => $source,
+                        'params' => serialize(
+                            array('page' => $page,
+                                'first' => $_firstKey,
+                                'second' => $_secondKey
+                            )
+                        )
+                    );
+                    $this->queries[] = $this->_replaceMysql($this->logTable, $logs);
+                    $this->_pushToDB();
+                    $this->writeSuccessLine('Категория - ' . $_firstKey.'; Страница - '.$page.'; Продукт - '.$_secondKey);
+                }
+            }
+            foreach ($_html->find('.ShopItemList__ItemBlockRow') as $_secondKey => $_product) {
+                if ($this->logs && ($_secondKey <= $this->logs['second'])) {
+                    if ($_secondKey+1 == count($_html->find('.ShopItemList__ItemBlockRow'))) {
+                        $this->logs = null;
+                        $page++;
+                        $postfix = '?page_id='.$page.'&amp;page_size=20&amp;currency=BYB&amp;sort=popularity--number&amp;to_order=1';
+                        $this->_shopByIteration($_firstKey, $source, $categoryTitle, $categoryHref, $page, $postfix);
+                    }
+                    continue;
+                }
+                $this->logs = null;
+                $link = $_product->find('.ShopItemList__ItemName', 0);
+                $productName = $link->plaintext;
+                $productHref = 'http://' . $source . $link->href;
+                $bind = array(
+                    'source' => $this->_replaceQuote($productHref),
+                    'category' => $this->_replaceQuote($categoryTitle),
+                    'article' => '',
+                    'name' => $this->_replaceQuote($productName),
+                    'price' => $this->_replacePrice($_product->find('.PriceBlock__PriceFirst span', 0)->plaintext),
+                    'beznal' => 0,
+                    'platform' => $source,
+                    'offer' => $this->_replaceQuote($_product->find('.ShopItemList__BlockShopLink a', 0)->plaintext)
+                );
+                $this->queries[] = $this->_insertMysql($this->catalogTable, $bind);
+                $logs = array(
+                    'platform' => $source,
+                    'params' => serialize(
+                        array('page' => $page,
+                            'first' => $_firstKey,
+                            'second' => $_secondKey
+                        )
+                    )
+                );
+                $this->queries[] = $this->_replaceMysql($this->logTable, $logs);
+                $this->_pushToDB();
+                $this->writeSuccessLine('Категория - ' . $_firstKey.'; Страница - '.$page.'; Продукт - '.$_secondKey);
+            }
+            $nextPage = $_html->find('.Paging__LastPage', 0);
+            if ($nextPage) {
+                $page++;
+                $this->_shopByIteration($_firstKey, $source, $categoryTitle, $categoryHref, $page, $nextPage->href);
+            }
+        }
+
     }
 
     private function _getOneKBy($source)
@@ -314,13 +431,6 @@ class ParserCommand extends CommandOutput
             }
         }
         $this->_pushToDB(true);
-    }
-
-    private function _shopByIteration($_firstKey, $source, $categoryTitle, $categoryHref) {
-        $_html = $this->_file_get_html($categoryHref);
-        if ($_html) {
-
-        }
     }
 
     protected function oneKByIteration($_firstKey, $_secondKey, $platform, $href, $category, $categoryHref, $page = 1)
