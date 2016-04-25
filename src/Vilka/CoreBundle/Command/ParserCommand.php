@@ -556,9 +556,11 @@ class ParserCommand extends CommandOutput
     {
         $links = $this->resources[$source];
         foreach ($links as $link) {
+            var_dump('111');
             $_html = $this->_file_get_html($link);
             if ($_html) {
-                foreach ($_html->find('.main_page .b-catalogitems li') as $_firstKey => $_category) {
+                var_dump('2222');
+                foreach ($_html->find('.            ]i') as $_firstKey => $_category) {
                     //$this->writeSuccessLine('first - '.$_firstKey);
                     if ($this->logs && ($_firstKey < $this->logs['first'])) {
                         continue;

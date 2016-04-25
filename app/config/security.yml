@@ -8,7 +8,7 @@ security:
 
     providers:
         main:
-            entity: { class: VilkaCoreBundle:User, property: username }
+            entity: { class: VilkaCoreBundle:User, property: email }
 
     firewalls:
         main:
