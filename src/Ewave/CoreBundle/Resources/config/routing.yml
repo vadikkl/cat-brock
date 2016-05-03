@@ -1,0 +1,23 @@
+ewave_core_homepage:
+    path:     /
+    defaults: { _controller: AcmeDemoBundle:Welcome:index }
+ewave_control:
+    resource: "@EwaveCoreBundle/Controller/AdminController.php"
+    type:     annotation
+ewave_control_setting:
+    resource: "@EwaveCoreBundle/Controller/SettingController.php"
+    type:     annotation
+ewave_control_user:
+    resource: "@EwaveCoreBundle/Controller/UserController.php"
+    type:     annotation
+ewave_control_catalog:
+    resource: "@EwaveCoreBundle/Controller/CatalogController.php"
+    type:     annotation
+ewave_control_history:
+    resource: "@EwaveCoreBundle/Controller/HistoryController.php"
+    type:     annotation
+
+_security_check:
+    pattern:  /login_check
+_security_logout:
+    pattern:  /logout

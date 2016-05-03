@@ -1,4 +1,4 @@
-vilka_core:
-    resource: "@VilkaCoreBundle/Resources/config/routing.yml"
+ewave_core:
+    resource: "@EwaveCoreBundle/Resources/config/routing.yml"
     prefix:   /
 

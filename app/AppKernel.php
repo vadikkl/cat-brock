@@ -20,7 +20,7 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\AopBundle\JMSAopBundle(),
-            new Vilka\CoreBundle\VilkaCoreBundle(),
+            new Ewave\CoreBundle\EwaveCoreBundle(),
             new Acme\DemoBundle\AcmeDemoBundle()
         );
 

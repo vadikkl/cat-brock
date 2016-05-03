@@ -63,7 +63,7 @@ doctrine:
             default:
                 connection: default
                 mappings:
-                    VilkaCoreBundle: ~
+                    EwaveCoreBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -75,11 +75,11 @@ swiftmailer:
 jms_di_extra:
     locations:
         all_bundles: false
-        bundles: [VilkaCoreBundle]
+        bundles: [EwaveCoreBundle]
         directories: ["%kernel.root_dir%/../src"]
 fos_user:
     db_driver:            orm
-    user_class:           Vilka\CoreBundle\Entity\User
+    user_class:           Ewave\CoreBundle\Entity\User
     firewall_name:        main
     model_manager_name:   null
     use_listener:         true

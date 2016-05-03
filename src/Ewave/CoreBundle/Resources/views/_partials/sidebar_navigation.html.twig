@@ -1,0 +1,64 @@
+{% set currentRoute = app.request.attributes.get('_route') %}
+<section id="col-left">
+    <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
+        <ul class="nav nav-pills nav-stacked">
+            <li {% if 'ewave_control_index' in currentRoute %}class="active"{% endif %}>
+                <a href="{{ path('ewave_control_index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Панель управления</span>
+                </a>
+            </li>
+            {% if is_granted('ROLE_ADMIN') %}
+            <li {% if 'ewave_control_user' in currentRoute %}class="active"{% endif %}>
+                <a href="{{ path('ewave_control_user') }}">
+                    <i class="fa fa-users"></i>
+                    <span>Пользователи</span>
+                </a>
+            </li>
+            {% endif %}
+            <li {% if 'ewave_control_catalog' in currentRoute %}class="active"{% endif %}>
+                <a href="{{ path('ewave_control_catalog') }}">
+                    <i class="fa fa-table"></i>
+                    <span>Каталог</span>
+                </a>
+            </li>
+            <li {% if 'ewave_control_history' in currentRoute %}class="active"{% endif %}>
+                <a href="{{ path('ewave_control_history') }}">
+                    <i class="fa fa-file-text-o"></i>
+                    <span>История</span>
+                </a>
+            </li>
+            {#<li><a href="#"><i class="fa fa-globe"></i><span>Компании</span></a></li>#}
+            {#<li><a href="#"><i class="fa fa-map-marker"></i><span>Рестораны</span></a></li>#}
+            {#<li><a href="#"><i class="fa fa-users"></i><span>Пользователи</span></a></li>#}
+            {#<li><a href="#"><i class="fa fa-cutlery"></i><span>Меню</span></a></li>#}
+            {#<li><a href="#"><i class="fa fa-clock-o"></i><span>Бронирование столиков</span></a></li>#}
+            {#<li><a href="#"><i class="fa fa-calendar"></i><span>Календарь</span></a></li>#}
+            {#<li><a href="#"><i class="fa fa-desktop"></i><span>Афиша</span></a></li>#}
+            {#<li><a href="#"><i class="fa fa-comments"></i><span>Отзывы</span></a></li>#}
+            {#<li {% if is_book is defined %}class="open"{% endif %}>#}
+                {#<a href="#" class="dropdown-toggle">#}
+                    {#<i class="fa fa-file-text-o"></i>#}
+                    {#<span>Справочники</span>#}
+                    {#<i class="fa fa-chevron-circle-down drop-icon"></i>#}
+                {#</a>#}
+                {#<ul class="submenu" {% if is_book is defined %}style="display: block;"{% endif %}>#}
+                    {#<li><a href="#">Районы</a></li>#}
+                    {#&#123;&#35;<li><a href="#">Города</a></li>&#35;&#125;#}
+                    {#<li>#}
+                        {#<a {% if 'ewave_control_subway' in currentRoute %}class="active"{% endif %} href="{{ path('ewave_control_subway') }}">Метро</a>#}
+                    {#</li>#}
+                    {#<li><a href="#">Кредитные карты</a></li>#}
+                    {#<li><a href="#">Классификации заведений</a></li>#}
+                    {#<li><a href="#">Развлечения</a></li>#}
+                    {#<li><a href="#">События</a></li>#}
+                    {#<li><a href="#">Оссобенности заведений</a></li>#}
+                    {#<li><a href="#">Кухни</a></li>#}
+                    {#<li><a href="#">Особенности меню</a></li>#}
+                    {#<li><a href="#">Музыкальные жанры</a></li>#}
+                {#</ul>#}
+            {#</li>#}
+            {#<li><a href="#"><i class="fa fa-question"></i><span>FAQ</span></a></li>#}
+        </ul>
+    </div>
+</section>

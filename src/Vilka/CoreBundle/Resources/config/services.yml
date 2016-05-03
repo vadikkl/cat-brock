@@ -1,7 +1,0 @@
-parameters:
-    vilka.manager.subway.class: Vilka\CoreBundle\Manager\SubwayManager
-
-services:
-#    vilka.manager.subway:
-#        class: %vilka.manager.subway.class%
-#        arguments: [doctrine.entity_manager]

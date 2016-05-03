@@ -1,0 +1,7 @@
+parameters:
+    ewave.manager.subway.class: Ewave\CoreBundle\Manager\SubwayManager
+
+services:
+#    ewave.manager.subway:
+#        class: %ewave.manager.subway.class%
+#        arguments: [doctrine.entity_manager]

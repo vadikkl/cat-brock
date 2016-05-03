@@ -1,14 +1,14 @@
 ## Security Configuration
 security:
     encoders:
-        Vilka\CoreBundle\Entity\User:
+        Ewave\CoreBundle\Entity\User:
             algorithm: sha512
             encode-as-base64: true
             iterations: 10
 
     providers:
         main:
-            entity: { class: VilkaCoreBundle:User, property: email }
+            entity: { class: EwaveCoreBundle:User, property: email }
 
     firewalls:
         main:

@@ -51,7 +51,7 @@ Cats and Brock
 
 Генерация setters и getters:
 
-    php app/console doctrine:generate:entities Vilka/CoreBundle/Entity/ModelName
+    php app/console doctrine:generate:entities Ewave/CoreBundle/Entity/ModelName
 
 Ссылка на русскую документацию
 ------------------------------
