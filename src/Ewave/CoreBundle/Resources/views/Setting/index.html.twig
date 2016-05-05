@@ -1,11 +1,11 @@
 {% extends 'EwaveCoreBundle::layout.html.twig' %}
-{% block title %}Настройки {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
+{% block title %}Settings {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <div class="clearfix">
-                    <h2 class="pull-left">Настройки
+                    <h2 class="pull-left">Settings
                     {% set lastItem = page*limit > count ? count : page*limit %}
                         <small>
                             {% if (entities) %} {{ (page-1)*limit+1 }} - {{ lastItem }} | {{ count }}{% endif %}
@@ -20,7 +20,7 @@
                             {{ form_end(form) }}
                         </div>
                         <a href="{{ path('ewave_control_setting_create') }}" class="btn btn-primary pull-right">
-                            <i class="fa fa-plus-circle fa-lg"></i> Добавить настройку
+                            <i class="fa fa-plus-circle fa-lg"></i> Create
                         </a>
                     </div>
                 </div>
@@ -35,17 +35,17 @@
                                 </th>
                                 <th>
                                     <a href="#">
-                                        <span class="name">Идентификатор</span>
+                                        <span class="name">Key</span>
                                     </a>
                                 </th>
                                 <th class="text-center">
                                     <a href="#">
-                                        <span class="value">Значение</span>
+                                        <span class="value">Value</span>
                                     </a>
                                 </th>
                                 <th class="text-center">
                                     <a href="#">
-                                        <span class="description">Описание</span>
+                                        <span class="description">Description</span>
                                     </a>
                                 </th>
                                 <th><span></span></th>

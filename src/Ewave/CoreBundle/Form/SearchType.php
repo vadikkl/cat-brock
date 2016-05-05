@@ -15,11 +15,11 @@ class SearchType extends AbstractType
             'search',
             'text',
             array(
-                'label' => 'Поиск',
+                'label' => 'Search',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                    'placeholder' => 'Искать...'
+                    'placeholder' => 'Search Text...'
                 )
             )
         );

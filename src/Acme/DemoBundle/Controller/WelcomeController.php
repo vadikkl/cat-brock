@@ -14,6 +14,6 @@ class WelcomeController extends Controller
          *
          */
 
-        return $this->render('AcmeDemoBundle:Welcome:index.html.twig');
+        return $this->redirect($this->generateUrl('ewave_control_index'));
     }
 }

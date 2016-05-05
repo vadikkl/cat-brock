@@ -1,7 +1,7 @@
 <header class="navbar" id="header-navbar">
     <div class="container">
         <a href="{{ path('ewave_control_index') }}" id="logo" class="navbar-brand col-md-6 col-sm-6 col-xs-12">
-            {#<img src="{{ asset('bundles/ewavecore/img/logo.png') }}" alt=""/> #}
+            <img src="{{ asset('bundles/ewavecore/img/logo.png') }}" alt="" height="115%"/>
             <span>{{ app.session.get('settings').site_name }} {{ app.session.get('settings').separator }} {{ app.session.get('settings').panel_name }}</span>
         </a>
 
@@ -159,11 +159,11 @@
                         <span class="hidden-xs">{{ app.user.username }}</span> <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ path('ewave_control_profile') }}"><i class="fa fa-user"></i>Профиль</a></li>
+                        <li><a href="{{ path('ewave_control_profile') }}"><i class="fa fa-user"></i>Profile</a></li>
                         {% if is_granted('ROLE_ADMIN') %}
-                        <li><a href="{{ path('ewave_control_setting') }}"><i class="fa fa-cog"></i>Настройки</a></li>
+                        <li><a href="{{ path('ewave_control_setting') }}"><i class="fa fa-cog"></i>Settings</a></li>
                         {% endif %}
-                        <li><a href="{{ path('_security_logout') }}"><i class="fa fa-power-off"></i>Выход</a></li>
+                        <li><a href="{{ path('_security_logout') }}"><i class="fa fa-power-off"></i>Logout</a></li>
                     </ul>
                 </li>
                 <li class="hidden-xxs">

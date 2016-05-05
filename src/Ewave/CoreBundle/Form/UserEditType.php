@@ -56,7 +56,7 @@ class UserEditType extends AbstractType
                 'attr' => array('class' => 'form-control')
             )
         );
-        $builder->add('submit', 'submit', array('label' => 'Cохранить'));
+        $builder->add('submit', 'submit', array('label' => 'Save'));
     }
 
     /**

@@ -51,7 +51,7 @@ class AdminType extends AbstractType
             'enabled',
             'hidden'
         );
-        $builder->add('submit', 'submit', array('label' => 'Cохранить'));
+        $builder->add('submit', 'submit', array('label' => 'Save'));
     }
 
     /**

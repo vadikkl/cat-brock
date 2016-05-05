@@ -5,27 +5,27 @@
             <li {% if 'ewave_control_index' in currentRoute %}class="active"{% endif %}>
                 <a href="{{ path('ewave_control_index') }}">
                     <i class="fa fa-dashboard"></i>
-                    <span>Панель управления</span>
+                    <span>Dashboard</span>
                 </a>
             </li>
             {% if is_granted('ROLE_ADMIN') %}
             <li {% if 'ewave_control_user' in currentRoute %}class="active"{% endif %}>
                 <a href="{{ path('ewave_control_user') }}">
                     <i class="fa fa-users"></i>
-                    <span>Пользователи</span>
+                    <span>Users</span>
                 </a>
             </li>
             {% endif %}
             <li {% if 'ewave_control_catalog' in currentRoute %}class="active"{% endif %}>
                 <a href="{{ path('ewave_control_catalog') }}">
                     <i class="fa fa-table"></i>
-                    <span>Каталог</span>
+                    <span>Catalog</span>
                 </a>
             </li>
             <li {% if 'ewave_control_history' in currentRoute %}class="active"{% endif %}>
                 <a href="{{ path('ewave_control_history') }}">
                     <i class="fa fa-file-text-o"></i>
-                    <span>История</span>
+                    <span>History</span>
                 </a>
             </li>
             {#<li><a href="#"><i class="fa fa-globe"></i><span>Компании</span></a></li>#}

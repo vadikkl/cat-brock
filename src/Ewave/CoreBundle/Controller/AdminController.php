@@ -41,7 +41,6 @@ class AdminController extends AdvancedController
      */
     public function loginAction()
     {
-
         if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
