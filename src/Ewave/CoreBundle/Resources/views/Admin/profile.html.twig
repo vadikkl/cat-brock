@@ -1,7 +1,7 @@
 {% extends 'EwaveCoreBundle::layout.html.twig' %}
 {% block title %}Profile {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 {% block content %}
-    <h1>Профиль</h1>
+    <h1>Profile</h1>
     <div class="row" id="user-profile">
         <div class="col-lg-3 col-md-4 col-sm-4">
             <div class="main-box clearfix">
@@ -12,10 +12,6 @@
                 </div>
 
                 <img src="{{ asset('bundles/ewavecore/img/samples/no-logo.png') }}" alt="" class="profile-img img-responsive center-block" />
-
-                <div class="profile-label">
-                    <span class="label label-danger">{{ app.user.roles.0 }}</span>
-                </div>
 
             </div>
         </div>
@@ -58,33 +54,16 @@
                         </div>
                         <div class="profile-user-details clearfix">
                             <div class="profile-user-details-label">
-                                &nbsp;
+                                Roles
                             </div>
                             <div class="profile-user-details-value">
-                                &nbsp;
+                                {% for role in app.user.roles %}
+                                    {% if attribute(roles, role) %}
+                                        <span class="label label-danger">{{ attribute(roles, role) }}</span>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
-                        {% if links|length %}
-                            {% for file in links %}
-                                <div class="profile-user-details clearfix">
-                                    <div class="profile-user-details-label">
-                                        {{ file.platform }}<br>
-                                        <i style="font-weight: normal;"><small><small>{{ file.date|date('Y-m-d H:i:s') }}</small></small></i>
-                                    </div>
-                                    <div class="profile-user-details-value">
-                                        <input type="text" class="form-control" value="{{ app.request.getSchemeAndHttpHost() }}/{{ file.link }}">
-                                    </div>
-                                </div>
-                                <div class="profile-user-details clearfix">
-                                    <div class="profile-user-details-label">
-                                        &nbsp;
-                                    </div>
-                                    <div class="profile-user-details-value">
-                                        &nbsp;
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
                     </div>
                 </div>
             </div>

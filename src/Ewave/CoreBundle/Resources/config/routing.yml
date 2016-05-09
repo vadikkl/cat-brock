@@ -16,6 +16,9 @@ ewave_control_catalog:
 ewave_control_history:
     resource: "@EwaveCoreBundle/Controller/HistoryController.php"
     type:     annotation
+ewave_control_team:
+    resource: "@EwaveCoreBundle/Controller/TeamController.php"
+    type:     annotation
 
 _security_check:
     pattern:  /login_check

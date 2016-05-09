@@ -2,6 +2,7 @@
 
 namespace Ewave\CoreBundle\Controller;
 
+use Ewave\CoreBundle\Form\UserType;
 use Ringbe\Bundle\CoreBundle\Entity\Setting;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -59,10 +60,8 @@ class AdminController extends AdvancedController
      */
     public function profileAction()
     {
-        $files = $this->getFileRepository()->getAll();
-
         return array(
-            'links' => $files
+            'roles' => array_merge(UserType::$ROLES, UserType::$HIDDEN_ROLES)
         );
     }
 

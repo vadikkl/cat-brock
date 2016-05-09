@@ -36,3 +36,11 @@ jQuery(document).ready(function() {
         jQuery('table thead th .'+sort_cookie[0]).parents('a').addClass(sort_cookie[1]);
     }
 });
+
+jQuery('.fa.fa-remove').on('click', function() {
+    if (confirm('Are you sure?'))  {
+        return true;
+    } else {
+        return false;
+    }
+});

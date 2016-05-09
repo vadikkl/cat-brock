@@ -30,6 +30,18 @@ class UserEditType extends AbstractType
             )
         );
         $builder->add(
+            'roles',
+            'choice',
+            array(
+                'choices' => array_merge(
+                    UserType::$ROLES
+                ) ,
+                'label' => 'Roles',
+                'multiple' => true,
+                'expanded' => true
+            )
+        );
+        $builder->add(
             'password',
             'password',
             array(

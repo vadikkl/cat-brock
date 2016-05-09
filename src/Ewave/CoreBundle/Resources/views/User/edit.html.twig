@@ -1,6 +1,6 @@
 {% extends 'EwaveCoreBundle::layout.html.twig' %}
 {% set is_book = true %}
-{% block title %}Редактирование пользователя {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
+{% block title %}Edit user {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -8,31 +8,36 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="main-box">
-                        <h2>Редактирование пользователя</h2>
+                        <h2>Edit user</h2>
                         {{ form_start(edit_form) }}
                         {{ form_errors(edit_form) }}
                         <div class="form-group">
-                            {{ form_label(edit_form.username, 'Имя пользователя') }}
-                            {{ form_widget(edit_form.username, { 'attr': {'class': 'form-control', 'placeholder': 'Введите имя пользователя'} }) }}
+                            {{ form_label(edit_form.username) }}
+                            {{ form_widget(edit_form.username, { 'attr': {'class': 'form-control', 'placeholder': 'Enter username'} }) }}
                             {{ form_errors(edit_form.username) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(edit_form.email, 'Email') }}
-                            {{ form_widget(edit_form.email, { 'attr': {'class': 'form-control', 'placeholder': 'Введите email'} }) }}
+                            {{ form_label(edit_form.email) }}
+                            {{ form_widget(edit_form.email, { 'attr': {'class': 'form-control', 'placeholder': 'Enter email'} }) }}
                             {{ form_errors(edit_form.email) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(edit_form.password, 'Пароль') }}
-                            {{ form_widget(edit_form.password, { 'attr': {'class': 'form-control', 'placeholder': 'Введите пароль'} }) }}
+                            {{ form_label(edit_form.roles) }}
+                            {{ form_widget(edit_form.roles) }}
+                            {{ form_errors(edit_form.roles) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(edit_form.password) }}
+                            {{ form_widget(edit_form.password, { 'attr': {'class': 'form-control', 'placeholder': 'Enter password'} }) }}
                             {{ form_errors(edit_form.password) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(edit_form.password_confirm, 'Подтверждение пароля') }}
-                            {{ form_widget(edit_form.password_confirm, { 'attr': {'class': 'form-control', 'placeholder': 'Повторите пароль'} }) }}
+                            {{ form_label(edit_form.password_confirm) }}
+                            {{ form_widget(edit_form.password_confirm, { 'attr': {'class': 'form-control', 'placeholder': 'Confirm password'} }) }}
                             {{ form_errors(edit_form.password_confirm) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(edit_form.enabled, 'Активен') }}
+                            {{ form_label(edit_form.enabled) }}
                             {{ form_widget(edit_form.enabled, { 'attr': {'class': 'form-control enabled'} }) }}
                         </div>
                         <div class="form-group">

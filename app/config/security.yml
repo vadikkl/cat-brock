@@ -26,8 +26,14 @@ security:
                 domain:   ~ # Defaults to the current domain from $_SERVER
     access_control:
 
-        - { path: /control/setting, role: ROLE_ADMIN }
-        - { path: /control/user, role: ROLE_ADMIN }
-        - { path: /control.*, role: ROLE_USER }
-        - { path: /.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /control/setting, roles: ROLE_ADMIN }
+        - { path: /control/user, roles: [ROLE_MANAGER,ROLE_TL,ROLE_EEG,ROLE_SA] }
+        - { path: /control.*, roles: [ROLE_USER,ROLE_BA,ROLE_DEV,ROLE_DEV_ROSTER,ROLE_SUP]}
+        - { path: /.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_MANAGER,ROLE_TL,ROLE_EEG,ROLE_SA]
+        ROLE_MANAGER: [ROLE_USER,ROLE_BA,ROLE_DEV,ROLE_DEV_ROSTER,ROLE_SUP]
+        ROLE_TL: [ROLE_USER,ROLE_BA,ROLE_DEV,ROLE_DEV_ROSTER,ROLE_SUP]
+        ROLE_EEG: [ROLE_USER,ROLE_BA,ROLE_DEV,ROLE_DEV_ROSTER,ROLE_SUP]
+        ROLE_SA: [ROLE_USER,ROLE_BA,ROLE_DEV,ROLE_DEV_ROSTER,ROLE_SUP]

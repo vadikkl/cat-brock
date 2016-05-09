@@ -2,6 +2,8 @@
 
 namespace Ewave\CoreBundle\Controller;
 
+use Ewave\CoreBundle\Manager\TeamManager;
+use Ewave\CoreBundle\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,7 +17,6 @@ use Ewave\CoreBundle\Repository\FileRepository;
 use Ewave\CoreBundle\Repository\HistoryRepository;
 use Ewave\CoreBundle\Repository\SettingRepository;
 use Ewave\CoreBundle\Repository\UserRepository;
-use Ewave\CoreBundle\Repository\RestaurantRepository;
 
 class AdvancedController extends Controller
 {
@@ -170,4 +171,21 @@ class AdvancedController extends Controller
     {
         return $this->get('ewave.manager.history');
     }
+
+    /**
+     * @return TeamRepository
+     */
+    public function getTeamRepository()
+    {
+        return $this->getRepository('Team');
+    }
+
+    /**
+     * @return TeamManager
+     */
+    public function getTeamManager()
+    {
+        return $this->get('ewave.manager.team');
+    }
+
 }

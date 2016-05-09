@@ -8,6 +8,23 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserType extends AbstractType
 {
+
+    static public $ROLES = array(
+        'ROLE_MANAGER' => 'Manager',
+        'ROLE_TL' => 'Team Lead',
+        'ROLE_BA' => 'Business Analyst',
+        'ROLE_DEV' => 'Developer',
+        'ROLE_DEV_ROSTER' => 'Developer on Roster',
+        'ROLE_SUP' => 'Support Specialist',
+        'ROLE_EEG' => 'EEG Specialist',
+        'ROLE_SA' => 'SA Specialist'
+    );
+
+    static public $HIDDEN_ROLES = array(
+        'ROLE_ADMIN' => 'Administrator',
+        'ROLE_USER' => ''
+    );
+
     /**
      * {@inheritdoc}
      */
@@ -19,6 +36,18 @@ class UserType extends AbstractType
             array(
                 'label' => 'Username',
                 'attr' => array('class' => 'form-control')
+            )
+        );
+        $builder->add(
+            'roles',
+            'choice',
+            array(
+                'choices' => array_merge(
+                    self::$ROLES
+                ) ,
+                'label' => 'Roles',
+                'multiple' => true,
+                'expanded' => true
             )
         );
         $builder->add(

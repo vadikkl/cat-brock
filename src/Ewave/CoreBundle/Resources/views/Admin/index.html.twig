@@ -1,47 +1,10 @@
 {% extends 'EwaveCoreBundle::layout.html.twig' %}
 {% block content %}
 <div class="row">
-    {% set cols = 4 %}
-    {% if is_granted('ROLE_ADMIN') %}
         {% set cols = 3 %}
-    <div class="col-lg-{{ cols }} col-sm-6 col-xs-12">
-        <div class="main-box infographic-box">
-            <i class="fa fa-user"></i>
-            <span class="headline">Пользователи</span>
-            <span class="value">{{ users }}</span>
-        </div>
+    <div class="col-lg-12">
+        <h2>How to use</h2>
+        <p>how to use text...</p>
     </div>
-    {% endif %}
-    <div class="col-lg-{{ cols }} col-sm-6 col-xs-12">
-        <div class="main-box infographic-box">
-            <i class="fa fa-shopping-cart red"></i>
-            <span class="headline">Onliner.by</span>
-            <span class="value">{{ onliner }}</span>
-        </div>
-    </div>
-    <div class="col-lg-{{ cols }} col-sm-6 col-xs-12">
-        <div class="main-box infographic-box">
-            <i class="fa fa-shopping-cart yellow"></i>
-            <span class="headline">1K.by</span>
-            <span class="value">{{ one }}</span>
-        </div>
-    </div>
-    <div class="col-lg-{{ cols }} col-sm-6 col-xs-12">
-        <div class="main-box infographic-box">
-            <i class="fa fa-shopping-cart green"></i>
-            <span class="headline">Shop.by</span>
-            <span class="value">{{ shop }}</span>
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-12">
-        <div class="main-box clearfix">
-            <div id="hero-donut" style="height: 250px; padding: 0; margin: 0;"></div>
-        </div>
-    </div>
-    <script>
-        var stat_onliner = {{ onliner }};
-        var stat_one = {{ one }};
-        var stat_shop = {{ shop }};
-    </script>
 </div>
 {% endblock %}

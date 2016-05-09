@@ -39,6 +39,7 @@ class UserManager
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
         $user->setEnabled((bool)$data['enabled']);
+        $user->setRoles($data['roles']);
         if ($data['password']) {
             $user->setPassword($user->setPlainPassword($data['password']));
         }
@@ -55,7 +56,7 @@ class UserManager
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
         $user->setPassword($user->setPlainPassword($data['password']));
-        $user->setRoles(array("ROLE_USER"));
+        $user->setRoles($data['roles']);
         $user->setEnabled((bool)$data['enabled']);
         return $this->save($user);
     }

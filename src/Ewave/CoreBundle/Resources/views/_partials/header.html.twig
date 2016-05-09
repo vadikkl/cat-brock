@@ -2,7 +2,7 @@
     <div class="container">
         <a href="{{ path('ewave_control_index') }}" id="logo" class="navbar-brand col-md-6 col-sm-6 col-xs-12">
             <img src="{{ asset('bundles/ewavecore/img/logo.png') }}" alt="" height="115%"/>
-            <span>{{ app.session.get('settings').site_name }} {{ app.session.get('settings').separator }} {{ app.session.get('settings').panel_name }}</span>
+            <span>{{ app.session.get('settings').site_name }} {#{{ app.session.get('settings').separator }} {{ app.session.get('settings').panel_name }} #}</span>
         </a>
 
         <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">

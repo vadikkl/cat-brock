@@ -129,6 +129,7 @@ class UserController extends AdvancedController
                 $form->get('username')->setData($user->getUsername());
                 $form->get('email')->setData($user->getEmail());
                 $form->get('enabled')->setData($user->isEnabled());
+                $form->get('roles')->setData($user->getRoles());
                 if ($request->getMethod() == 'POST') {
                     $form->handleRequest($request);
                     if ($form->isValid()) {
