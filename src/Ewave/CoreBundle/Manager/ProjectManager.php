@@ -2,17 +2,15 @@
 
 namespace Ewave\CoreBundle\Manager;
 
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Ewave\CoreBundle\Entity\Team;
+use Ewave\CoreBundle\Entity\Project;
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 /**
- * @DI\Service("ewave.manager.team")
+ * @DI\Service("ewave.manager.project")
  */
-class TeamManager
+class ProjectManager
 {
     /**
      * @var EntityManager
@@ -32,25 +30,26 @@ class TeamManager
     }
 
     /**
-     * @param Team $data
-     * @param Team $team
+     * @param Project $data
+     * @param Project $project
      * @return bool
      */
-    public function update(Team $data, Team $team)
+    public function update(Project $data, Project $project)
     {
-        $team->setTitle($data->getTitle());
+        $project->setTitle($data->getTitle());
+        $project->setDescription($data->getDescription());
 
-        return $this->save($team);
+        return $this->save($project);
     }
 
     /**
-     * @param Team $team
+     * @param Project $project
      * @return bool
      */
-    public function save(Team $team)
+    public function save(Project $project)
     {
         try {
-            $this->entityManager->persist($team);
+            $this->entityManager->persist($project);
             $this->entityManager->flush();
         } catch (Exception $e) {
 
@@ -61,20 +60,14 @@ class TeamManager
     }
 
     /**
-     * @param Team $team
+     * @param Project $project
      * @return bool
      */
-    public function delete(Team $team, FlashBag $flashBag)
+    public function delete(Project $project)
     {
         try {
-            $this->entityManager->remove($team);
+            $this->entityManager->remove($project);
             $this->entityManager->flush();
-        } catch (ForeignKeyConstraintViolationException $e) {
-            $flashBag->add(
-                'warning',
-                'Please, delete all users from the team before'
-            );
-            return false;
         } catch (Exception $e) {
 
             return false;

@@ -10,14 +10,14 @@ ewave_control_setting:
 ewave_control_user:
     resource: "@EwaveCoreBundle/Controller/UserController.php"
     type:     annotation
-ewave_control_catalog:
-    resource: "@EwaveCoreBundle/Controller/CatalogController.php"
-    type:     annotation
 ewave_control_history:
     resource: "@EwaveCoreBundle/Controller/HistoryController.php"
     type:     annotation
 ewave_control_team:
     resource: "@EwaveCoreBundle/Controller/TeamController.php"
+    type:     annotation
+ewave_control_project:
+    resource: "@EwaveCoreBundle/Controller/ProjectController.php"
     type:     annotation
 
 _security_check:

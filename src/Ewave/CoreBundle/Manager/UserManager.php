@@ -36,13 +36,15 @@ class UserManager
      * @param Team $team
      * @return bool
      */
-    public function update(array $data, User $user, Team $team)
+    public function update(array $data, User $user, Team $team = null)
     {
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
         $user->setEnabled((bool)$data['enabled']);
         $user->setRoles($data['roles']);
-        $user->setTeam($team);
+        if ($team) {
+            $user->setTeam($team);
+        }
         if ($data['password']) {
             $user->setPassword($user->setPlainPassword($data['password']));
         }

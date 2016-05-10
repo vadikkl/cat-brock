@@ -3,7 +3,6 @@
 namespace Ewave\CoreBundle\Controller;
 
 use Ewave\CoreBundle\Form\UserType;
-use Ringbe\Bundle\CoreBundle\Entity\Setting;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -21,18 +20,7 @@ class AdminController extends AdvancedController
      */
     public function indexAction()
     {
-        $userRepository = $this->getUserRepository();
-        $users = $userRepository->count();
-        $catalogRepository = $this->getCatalogRepository();
-        $onliner = $catalogRepository->getCountByPlatform('onliner.by');
-        $one = $catalogRepository->getCountByPlatform('1k.by');
-        $shop = $catalogRepository->getCountByPlatform('shop.by');
-
         return array(
-            'users' => $users,
-            'onliner' => $onliner,
-            'one' => $one,
-            'shop' => $shop,
         );
     }
 

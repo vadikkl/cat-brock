@@ -2,7 +2,9 @@
 
 namespace Ewave\CoreBundle\Controller;
 
+use Ewave\CoreBundle\Manager\ProjectManager;
 use Ewave\CoreBundle\Manager\TeamManager;
+use Ewave\CoreBundle\Repository\ProjectRepository;
 use Ewave\CoreBundle\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -125,27 +127,11 @@ class AdvancedController extends Controller
     }
 
     /**
-     * @return CatalogRepository
-     */
-    public function getCatalogRepository()
-    {
-        return $this->getRepository('Catalog');
-    }
-
-    /**
      * @return SettingRepository
      */
     public function getSettingRepository()
     {
         return $this->getRepository('Setting');
-    }
-
-    /**
-     * @return FileRepository
-     */
-    public function getFileRepository()
-    {
-        return $this->getRepository('File');
     }
 
     /**
@@ -186,6 +172,22 @@ class AdvancedController extends Controller
     public function getTeamManager()
     {
         return $this->get('ewave.manager.team');
+    }
+
+    /**
+     * @return ProjectRepository
+     */
+    public function getProjectRepository()
+    {
+        return $this->getRepository('Project');
+    }
+
+    /**
+     * @return ProjectManager
+     */
+    public function getProjectManager()
+    {
+        return $this->get('ewave.manager.project');
     }
 
 }
