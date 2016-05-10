@@ -47,4 +47,13 @@ class TeamRepository extends EntityRepository
                 ->setParameter('search', '%' . $search . '%');
         }
     }
+
+    public function getAll()
+    {
+        $query = $this->createQueryBuilder('s')
+            ->addSelect('s.id, s.title');
+        $query = $query->orderBy('s.title')
+            ->getQuery();
+        return $query->getResult();
+    }
 }

@@ -2,10 +2,12 @@
 
 namespace Ewave\CoreBundle\Manager;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Ewave\CoreBundle\Entity\Team;
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 /**
  * @DI\Service("ewave.manager.team")
@@ -62,11 +64,17 @@ class TeamManager
      * @param Team $team
      * @return bool
      */
-    public function delete(Team $team)
+    public function delete(Team $team, FlashBag $flashBag)
     {
         try {
             $this->entityManager->remove($team);
             $this->entityManager->flush();
+        } catch (ForeignKeyConstraintViolationException $e) {
+            $flashBag->add(
+                'danger',
+                'Please, delete all users from the team before'
+            );
+            return false;
         } catch (Exception $e) {
 
             return false;

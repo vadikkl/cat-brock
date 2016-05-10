@@ -59,7 +59,8 @@ class UserController extends AdvancedController
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(new UserType());
+        $teams = $this->getTeamRepository()->getAll();
+        $form = $this->createForm(new UserType($teams));
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -67,34 +68,42 @@ class UserController extends AdvancedController
                 $manager = $this->getUserManager();
                 $userRepository = $this->getUserRepository();
                 $error = false;
-                $user = $userRepository->findOneByUsername($data['username']);
+                /*$user = $userRepository->findOneByUsername($data['username']);
                 if ($user) {
                     $this->get('session')->getFlashBag()->add(
                         'danger',
                         'Пользователь с таким именем уже существует'
                     );
                     $error = true;
-                }
+                }*/
                 $user = $userRepository->findOneByEmail($data['email']);
                 if ($user) {
                     $this->get('session')->getFlashBag()->add(
                         'danger',
-                        'Пользователь с таким email уже существует'
+                        'The email already used'
+                    );
+                    $error = true;
+                }
+                $team = $this->getTeamRepository()->find($data['team']);
+                if (!$team) {
+                    $this->get('session')->getFlashBag()->add(
+                        'danger',
+                        'The team does not exist'
                     );
                     $error = true;
                 }
                 if ($data['password'] === $data['password_confirm']) {
                     if (!$error) {
-                        if ($manager->create($data)) {
+                        if ($manager->create($data, $team)) {
                             $this->get('session')->getFlashBag()->add(
                                 'success',
-                                'Пользователь успешно создан'
+                                'User was created successfully'
                             );
                             $this->get('session')->set('settings', null);
                         } else {
                             $this->get('session')->getFlashBag()->add(
                                 'danger',
-                                'Ошибка при создании'
+                                'Error while creating'
                             );
                         }
                         return $this->redirect($this->generateUrl('ewave_control_user'));
@@ -102,7 +111,7 @@ class UserController extends AdvancedController
                 } else {
                     $this->get('session')->getFlashBag()->add(
                         'danger',
-                        'Пароли не совпадают'
+                        'Passwords do not match'
                     );
                 }
             }
@@ -121,7 +130,8 @@ class UserController extends AdvancedController
     public function editAction(Request $request, $id)
     {
         $id = (int)$id;
-        $form = $this->createForm(new UserEditType());
+        $teams = $this->getTeamRepository()->getAll();
+        $form = $this->createForm(new UserEditType($teams));
         if ($id) {
             $userRepository = $this->getUserRepository();
             $user = $userRepository->find($id);
@@ -130,6 +140,7 @@ class UserController extends AdvancedController
                 $form->get('email')->setData($user->getEmail());
                 $form->get('enabled')->setData($user->isEnabled());
                 $form->get('roles')->setData($user->getRoles());
+                $form->get('team')->setData($user->getTeam()->getId());
                 if ($request->getMethod() == 'POST') {
                     $form->handleRequest($request);
                     if ($form->isValid()) {
@@ -137,14 +148,14 @@ class UserController extends AdvancedController
                         $data = $form->getData();
                         $manager = $this->getUserManager();
                         $error = false;
-                        $userExist = $userRepository->findOneByUsername($data['username']);
+                        /*$userExist = $userRepository->findOneByUsername($data['username']);
                         if ($userExist && ($user->getId() != $userExist->getId())) {
                             $this->get('session')->getFlashBag()->add(
                                 'danger',
                                 'Пользователь с таким именем уже существует'
                             );
                             $error = true;
-                        }
+                        }*/
                         $userExist = $userRepository->findOneByEmail($data['email']);
                         if ($userExist && ($user->getId() != $userExist->getId())) {
                             $this->get('session')->getFlashBag()->add(
@@ -153,9 +164,17 @@ class UserController extends AdvancedController
                             );
                             $error = true;
                         }
+                        $team = $this->getTeamRepository()->find($data['team']);
+                        if (!$team) {
+                            $this->get('session')->getFlashBag()->add(
+                                'danger',
+                                'The team does not exist'
+                            );
+                            $error = true;
+                        }
                         if ($data['password'] === $data['password_confirm']) {
                             if (!$error) {
-                                if ($manager->update($data, $user)) {
+                                if ($manager->update($data, $user, $team)) {
                                     $this->get('session')->getFlashBag()->add(
                                         'success',
                                         'Пользователь успешно сохранен'

@@ -2,13 +2,13 @@
 
 namespace Ewave\CoreBundle\Form;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserType extends AbstractType
 {
-
     static public $ROLES = array(
         'ROLE_MANAGER' => 'Manager',
         'ROLE_TL' => 'Team Lead',
@@ -24,6 +24,14 @@ class UserType extends AbstractType
         'ROLE_ADMIN' => 'Administrator',
         'ROLE_USER' => ''
     );
+
+    private $_teams = array();
+
+    public function __construct($teams) {
+        foreach ($teams as $team) {
+            $this->_teams[$team['id']] = $team['title'];
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -48,6 +56,14 @@ class UserType extends AbstractType
                 'label' => 'Roles',
                 'multiple' => true,
                 'expanded' => true
+            )
+        );
+        $builder->add(
+            'team',
+            'choice',
+            array(
+                'choices' => $this->_teams,
+                'label' => 'Team'
             )
         );
         $builder->add(

@@ -25,11 +25,10 @@ class User extends BaseUser
     protected $id;
 
     /**
-     *
-     * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="History", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="teams")
+     * @ORM\JoinColumn(name="team", referencedColumnName="id")
      */
-    protected $histories;
+    private $team;
 
     public function __construct()
     {
@@ -47,39 +46,26 @@ class User extends BaseUser
         return $this->id;
     }
 
-
-
     /**
-     * Add histories
+     * Set team
      *
-     * @param \Ewave\CoreBundle\Entity\History $histories
-     * @return User
+     * @param \Ewave\CoreBundle\Entity\Team $team
+     * @return History
      */
-    public function addHistory(\Ewave\CoreBundle\Entity\History $histories)
+    public function setTeam(\Ewave\CoreBundle\Entity\Team $team)
     {
-        $this->histories[] = $histories;
+        $this->team = $team;
 
         return $this;
     }
 
     /**
-     * Remove histories
+     * Get user
      *
-     * @param \Ewave\CoreBundle\Entity\History $histories
+     * @return \Ewave\CoreBundle\Entity\Team
      */
-    public function removeHistory(\Ewave\CoreBundle\Entity\History $histories)
+    public function getTeam()
     {
-        $this->histories->removeElement($histories);
+        return $this->team;
     }
-
-    /**
-     * Get histories
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getHistories()
-    {
-        return $this->histories;
-    }
-
 }

@@ -8,6 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserEditType extends AbstractType
 {
+
+    private $_teams = array();
+
+    public function __construct($teams) {
+        foreach ($teams as $team) {
+            $this->_teams[$team['id']] = $team['title'];
+        }
+    }
     /**
      * {@inheritdoc}
      */
@@ -27,6 +35,14 @@ class UserEditType extends AbstractType
             array(
                 'label' => 'Email',
                 'attr' => array('class' => 'form-control')
+            )
+        );
+        $builder->add(
+            'team',
+            'choice',
+            array(
+                'choices' => $this->_teams,
+                'label' => 'Team'
             )
         );
         $builder->add(

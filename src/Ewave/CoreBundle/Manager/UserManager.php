@@ -2,6 +2,7 @@
 
 namespace Ewave\CoreBundle\Manager;
 
+use Ewave\CoreBundle\Entity\Team;
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -32,14 +33,16 @@ class UserManager
     /**
      * @param array $data
      * @param User $user
+     * @param Team $team
      * @return bool
      */
-    public function update(array $data, User $user)
+    public function update(array $data, User $user, Team $team)
     {
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
         $user->setEnabled((bool)$data['enabled']);
         $user->setRoles($data['roles']);
+        $user->setTeam($team);
         if ($data['password']) {
             $user->setPassword($user->setPlainPassword($data['password']));
         }
@@ -48,15 +51,17 @@ class UserManager
 
     /**
      * @param array $data
+     * @param Team $team
      * @return bool
      */
-    public function create($data)
+    public function create($data, Team $team)
     {
         $user = new User();
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
         $user->setPassword($user->setPlainPassword($data['password']));
         $user->setRoles($data['roles']);
+        $user->setTeam($team);
         $user->setEnabled((bool)$data['enabled']);
         return $this->save($user);
     }

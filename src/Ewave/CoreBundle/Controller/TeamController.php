@@ -142,15 +142,16 @@ class TeamController extends AdvancedController
             $teamRepository = $this->getTeamRepository();
             $team = $teamRepository->find($id);
             if ($team) {
+                $session = $this->get('session');
                 $teamManager = $this->getTeamManager();
-                if ($teamManager->delete($team)) {
-                    $this->get('session')->getFlashBag()->add(
+                if ($teamManager->delete($team, $session->getFlashBag())) {
+                    $session->getFlashBag()->add(
                         'success',
                         'Team was deleted'
                     );
-                    $this->get('session')->set('teams', null);
+                    $session->set('teams', null);
                 } else {
-                    $this->get('session')->getFlashBag()->add(
+                    $session->getFlashBag()->add(
                         'danger',
                         'Error while deleting'
                     );
