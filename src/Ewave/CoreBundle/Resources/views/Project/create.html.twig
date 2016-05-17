@@ -22,6 +22,11 @@
                             {{ form_widget(form.description, { 'attr': {'class': 'form-control', 'placeholder': 'Enter description'} }) }}
                         </div>
                         <div class="form-group">
+                            {{ form_label(form.team) }}
+                            {{ form_widget(form.team, { 'attr': {'class': 'form-control'} }) }}
+                            {{ form_errors(form.team) }}
+                        </div>
+                        <div class="form-group">
                             {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-success'} }) }}
                         </div>
                         {{ form_end(form) }}

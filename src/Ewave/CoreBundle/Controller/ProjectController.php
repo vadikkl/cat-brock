@@ -58,13 +58,25 @@ class ProjectController extends AdvancedController
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(new ProjectType());
+        $teams = $this->getTeamRepository()->getAll();
+        $form = $this->createForm(new ProjectType($teams));
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
+                $team = null;
+                if ($data['team']) {
+                    $team = $this->getTeamRepository()->find($data['team']);
+                    if (!$team) {
+                        $this->get('session')->getFlashBag()->add(
+                            'danger',
+                            'The team does not exist'
+                        );
+                        return $this->redirect($this->generateUrl('ewave_control_project'));
+                    }
+                }
                 $manager = $this->getProjectManager();
-                if ($manager->save($data)) {
+                if ($manager->create($data, $team)) {
                     $this->get('session')->getFlashBag()->add(
                         'success',
                         'Project was created successfully'
@@ -93,20 +105,36 @@ class ProjectController extends AdvancedController
     public function editAction(Request $request, $id)
     {
         $id = (int)$id;
-        $form = $this->createForm(new ProjectType());
+        $teams = $this->getTeamRepository()->getAll();
+        $form = $this->createForm(new ProjectType($teams));
         if ($id) {
             $projectRepository = $this->getProjectRepository();
             $project = $projectRepository->find($id);
             if ($project) {
+                $projectTeam = $project->getTeam();
                 $form->get('title')->setData($project->getTitle());
                 $form->get('description')->setData($project->getDescription());
+                if ($projectTeam) {
+                    $form->get('team')->setData($projectTeam->getId());
+                }
                 if ($request->getMethod() == 'POST') {
                     $form->handleRequest($request);
                     if ($form->isValid()) {
                         /* @var $data Project */
                         $data = $form->getData();
+                        $team = null;
+                        if ($data['team']) {
+                            $team = $this->getTeamRepository()->find($data['team']);
+                            if (!$team) {
+                                $this->get('session')->getFlashBag()->add(
+                                    'danger',
+                                    'The team does not exist'
+                                );
+                                return $this->redirect($this->generateUrl('ewave_control_project'));
+                            }
+                        }
                         $projectManager = $this->getProjectManager();
-                        if ($projectManager->update($data, $project)) {
+                        if ($projectManager->update($data, $project, $team)) {
                             $this->get('session')->getFlashBag()->add(
                                 'success',
                                 'Project was changed successfully'

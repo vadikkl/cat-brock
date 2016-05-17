@@ -60,7 +60,8 @@ class UserController extends AdvancedController
     public function createAction(Request $request)
     {
         $teams = $this->getTeamRepository()->getAll();
-        $form = $this->createForm(new UserType($teams));
+        $projects = $this->getProjectRepository()->getAll();
+        $form = $this->createForm(new UserType($teams, $projects));
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {

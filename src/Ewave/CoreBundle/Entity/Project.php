@@ -2,6 +2,7 @@
 
 namespace Ewave\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,19 @@ class Project
      * @ORM\Column(name="description", type="string", length=5000)
      */
     private $description;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="teams")
+     * @ORM\JoinColumn(onDelete="SET NULL", name="team", referencedColumnName="id")
+     */
+    private $team;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="projects")
+     */
+    protected $users;
 
 
     /**
@@ -92,6 +106,62 @@ class Project
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set team
+     *
+     * @param \Ewave\CoreBundle\Entity\Team $team
+     * @return Project
+     */
+    public function setTeam(\Ewave\CoreBundle\Entity\Team $team = null)
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * Get team
+     *
+     * @return \Ewave\CoreBundle\Entity\Team
+     */
+    public function getTeam()
+    {
+        return $this->team;
+    }
+
+    /**
+     * Add users
+     *
+     * @param \Ewave\CoreBundle\Entity\User $user
+     * @return User
+     */
+    public function addUser(\Ewave\CoreBundle\Entity\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \Ewave\CoreBundle\Entity\User $user
+     */
+    public function removeUser(\Ewave\CoreBundle\Entity\User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }
 

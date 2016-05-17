@@ -3,6 +3,7 @@
 namespace Ewave\CoreBundle\Manager;
 
 use Ewave\CoreBundle\Entity\Project;
+use Ewave\CoreBundle\Entity\Team;
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -30,15 +31,31 @@ class ProjectManager
     }
 
     /**
-     * @param Project $data
+     * @param $data
      * @param Project $project
+     * @param Team $team
      * @return bool
      */
-    public function update(Project $data, Project $project)
+    public function update($data, Project $project, Team $team = null)
     {
-        $project->setTitle($data->getTitle());
-        $project->setDescription($data->getDescription());
+        $project->setTitle($data['title']);
+        $project->setDescription($data['description']);
+        $project->setTeam($team);
 
+        return $this->save($project);
+    }
+
+    /**
+     * @param array $data
+     * @param Team $team
+     * @return bool
+     */
+    public function create($data, Team $team = null)
+    {
+        $project = new Project();
+        $project->setTitle($data['title']);
+        $project->setDescription($data['description']);
+        $project->setTeam($team);
         return $this->save($project);
     }
 

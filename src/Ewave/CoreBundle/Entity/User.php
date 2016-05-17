@@ -30,6 +30,13 @@ class User extends BaseUser
      */
     private $team;
 
+    /**
+     *
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="Project", inversedBy="users")
+     */
+    protected $projects;
+
     public function __construct()
     {
         parent::__construct();
@@ -60,12 +67,45 @@ class User extends BaseUser
     }
 
     /**
-     * Get user
+     * Get team
      *
      * @return \Ewave\CoreBundle\Entity\Team
      */
     public function getTeam()
     {
         return $this->team;
+    }
+
+    /**
+     * Add projects
+     *
+     * @param \Ewave\CoreBundle\Entity\Project $projects
+     * @return User
+     */
+    public function addProject(\Ewave\CoreBundle\Entity\Project $projects)
+    {
+        $this->projects[] = $projects;
+
+        return $this;
+    }
+
+    /**
+     * Remove projects
+     *
+     * @param \Ewave\CoreBundle\Entity\Project $projects
+     */
+    public function removeProject(\Ewave\CoreBundle\Entity\Project $projects)
+    {
+        $this->projects->removeElement($projects);
+    }
+
+    /**
+     * Get projects
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjects()
+    {
+        return $this->projects;
     }
 }

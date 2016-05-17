@@ -42,6 +42,13 @@
                             {{ form_widget(form.password_confirm, { 'attr': {'class': 'form-control', 'placeholder': 'Confirm password'} }) }}
                             {{ form_errors(form.password_confirm) }}
                         </div>
+                        {%  if form.projects is defined %}
+                        <div class="form-group">
+                            {{ form_label(form.projects) }}
+                            {{ form_widget(form.projects) }}
+                            {{ form_errors(form.projects) }}
+                        </div>
+                        {% endif %}
                         <div class="form-group">
                             {{ form_label(form.enabled, 'Is Active') }}
                             {{ form_widget(form.enabled, { 'attr': {'class': 'form-control enabled'} }) }}

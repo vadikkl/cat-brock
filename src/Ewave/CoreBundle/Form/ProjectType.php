@@ -8,6 +8,15 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProjectType extends AbstractType
 {
+    private $_teams = array();
+
+    public function __construct($teams) {
+        foreach ($teams as $team) {
+            $this->_teams[$team['id']] = $team['title'];
+        }
+    }
+
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -19,6 +28,17 @@ class ProjectType extends AbstractType
             ->add('description', 'textarea')
             ->add('submit', 'submit', array('label' => 'Save'))
         ;
+        $builder->add(
+            'team',
+            'choice',
+            array(
+                'required' => false,
+                'choices' =>
+                        array('' => 'Select a team') + $this->_teams
+                ,
+                'label' => 'Team'
+            )
+        );
     }
     
     /**
@@ -27,7 +47,6 @@ class ProjectType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Ewave\CoreBundle\Entity\Project',
             'csrf_protection' => true
         ));
     }
