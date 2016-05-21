@@ -57,6 +57,7 @@
                         </thead>
                         <tbody>
                         {% for entity in entities %}
+                            {{ dump(entity) }}
                             <tr>
                                 <td>
                                     # {{ entity.id }}

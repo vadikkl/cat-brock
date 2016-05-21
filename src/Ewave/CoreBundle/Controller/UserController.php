@@ -69,14 +69,6 @@ class UserController extends AdvancedController
                 $manager = $this->getUserManager();
                 $userRepository = $this->getUserRepository();
                 $error = false;
-                /*$user = $userRepository->findOneByUsername($data['username']);
-                if ($user) {
-                    $this->get('session')->getFlashBag()->add(
-                        'danger',
-                        'Пользователь с таким именем уже существует'
-                    );
-                    $error = true;
-                }*/
                 $user = $userRepository->findOneByEmail($data['email']);
                 if ($user) {
                     $this->get('session')->getFlashBag()->add(
@@ -118,7 +110,8 @@ class UserController extends AdvancedController
             }
         }
         return array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'projects' => $projects
         );
     }
 
@@ -132,7 +125,8 @@ class UserController extends AdvancedController
     {
         $id = (int)$id;
         $teams = $this->getTeamRepository()->getAll();
-        $form = $this->createForm(new UserEditType($teams));
+        $projects = $this->getProjectRepository()->getAll();
+        $form = $this->createForm(new UserEditType($teams, $projects));
         if ($id) {
             $userRepository = $this->getUserRepository();
             $user = $userRepository->find($id);
@@ -142,6 +136,14 @@ class UserController extends AdvancedController
                 $form->get('enabled')->setData($user->isEnabled());
                 $form->get('roles')->setData($user->getRoles());
                 $form->get('team')->setData($user->getTeam()->getId());
+                $existProjects = $user->getProjects()->toArray();
+                $existProjectArr = array();
+                if (count($existProjects)) {
+                    foreach ($existProjects as $existProject) {
+                        $existProjectArr[] = $existProject->getId();
+                    }
+                }
+                $form->get('projects')->setData($existProjectArr);
                 if ($request->getMethod() == 'POST') {
                     $form->handleRequest($request);
                     if ($form->isValid()) {
@@ -149,19 +151,11 @@ class UserController extends AdvancedController
                         $data = $form->getData();
                         $manager = $this->getUserManager();
                         $error = false;
-                        /*$userExist = $userRepository->findOneByUsername($data['username']);
-                        if ($userExist && ($user->getId() != $userExist->getId())) {
-                            $this->get('session')->getFlashBag()->add(
-                                'danger',
-                                'Пользователь с таким именем уже существует'
-                            );
-                            $error = true;
-                        }*/
                         $userExist = $userRepository->findOneByEmail($data['email']);
                         if ($userExist && ($user->getId() != $userExist->getId())) {
                             $this->get('session')->getFlashBag()->add(
                                 'danger',
-                                'Пользователь с таким email уже существует'
+                                'The email already used'
                             );
                             $error = true;
                         }
@@ -178,13 +172,13 @@ class UserController extends AdvancedController
                                 if ($manager->update($data, $user, $team)) {
                                     $this->get('session')->getFlashBag()->add(
                                         'success',
-                                        'Пользователь успешно сохранен'
+                                        'User was updated successfully'
                                     );
                                     $this->get('session')->set('settings', null);
                                 } else {
                                     $this->get('session')->getFlashBag()->add(
                                         'danger',
-                                        'Ошибка при создании'
+                                        'Passwords do not match'
                                     );
                                 }
                                 return $this->redirect($this->generateUrl('ewave_control_user'));
@@ -192,7 +186,7 @@ class UserController extends AdvancedController
                         } else {
                             $this->get('session')->getFlashBag()->add(
                                 'danger',
-                                'Пароли не совпадают'
+                                'Passwords do not match'
                             );
                         }
                     }
@@ -204,7 +198,8 @@ class UserController extends AdvancedController
             return $this->entityNotFound();
         }
         return array(
-            'edit_form' => $form->createView()
+            'edit_form' => $form->createView(),
+            'projects' => $projects
         );
     }
 

@@ -44,3 +44,22 @@ jQuery('.fa.fa-remove').on('click', function() {
         return false;
     }
 });
+jQuery(document).ready(function() {
+    if (typeof projects !== 'undefined') {
+        for (var i = 0; i < projects.length; i++) {
+            jQuery('#projects :input[value="'+ projects[i].project +'"]').addClass('team' + projects[i].team);
+        }
+    }
+});
+
+jQuery('#team').on('change', function() {
+    var team = jQuery(this).val();
+    if (jQuery('#projects input.team' + team).length) {
+        jQuery('#projects input').each(function() {
+            jQuery(this).prop('checked', false);
+        });
+        jQuery('#projects input.team' + team).each(function() {
+            jQuery(this).prop('checked', true);
+        });
+    }
+});

@@ -40,7 +40,7 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->histories = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     /**
@@ -90,7 +90,7 @@ class User extends BaseUser
     }
 
     /**
-     * Remove projects
+     * Remove project
      *
      * @param \Ewave\CoreBundle\Entity\Project $projects
      */
@@ -100,9 +100,17 @@ class User extends BaseUser
     }
 
     /**
+     * Remove projects
+     */
+    public function removeAllProjects()
+    {
+        $this->projects = null;
+    }
+
+    /**
      * Get projects
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Project[]
      */
     public function getProjects()
     {

@@ -23,15 +23,22 @@
                             {{ form_errors(form.email) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(form.team) }}
-                            {{ form_widget(form.team, { 'attr': {'class': 'form-control'} }) }}
-                            {{ form_errors(form.team) }}
-                        </div>
-                        <div class="form-group">
                             {{ form_label(form.roles) }}
                             {{ form_widget(form.roles) }}
                             {{ form_errors(form.roles) }}
                         </div>
+                        <div class="form-group">
+                            {{ form_label(form.team) }}
+                            {{ form_widget(form.team, { 'attr': {'class': 'form-control'} }) }}
+                            {{ form_errors(form.team) }}
+                        </div>
+                        {%  if form.projects is defined %}
+                            <div class="form-group">
+                                {{ form_label(form.projects) }}
+                                {{ form_widget(form.projects) }}
+                                {{ form_errors(form.projects) }}
+                            </div>
+                        {% endif %}
                         <div class="form-group">
                             {{ form_label(form.password) }}
                             {{ form_widget(form.password, { 'attr': {'class': 'form-control', 'placeholder': 'Enter password'} }) }}
@@ -42,13 +49,6 @@
                             {{ form_widget(form.password_confirm, { 'attr': {'class': 'form-control', 'placeholder': 'Confirm password'} }) }}
                             {{ form_errors(form.password_confirm) }}
                         </div>
-                        {%  if form.projects is defined %}
-                        <div class="form-group">
-                            {{ form_label(form.projects) }}
-                            {{ form_widget(form.projects) }}
-                            {{ form_errors(form.projects) }}
-                        </div>
-                        {% endif %}
                         <div class="form-group">
                             {{ form_label(form.enabled, 'Is Active') }}
                             {{ form_widget(form.enabled, { 'attr': {'class': 'form-control enabled'} }) }}
@@ -62,4 +62,14 @@
             </div>
         </div>
     </div>
+{% if projects|length %}
+    <script type="text/javascript">
+        var projects = []
+    {% for project in projects %}
+        {% if project.0.team %}
+        projects.push({project: {{ project.id }}, team:{{ project.0.team.id }}});
+        {% endif %}
+    {% endfor%}
+    </script>
+{% endif %}
 {% endblock %}

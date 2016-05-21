@@ -3,6 +3,7 @@
 namespace Ewave\CoreBundle\Manager;
 
 use Ewave\CoreBundle\Entity\Team;
+use Ewave\CoreBundle\Repository\ProjectRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -45,6 +46,13 @@ class UserManager
         if ($team) {
             $user->setTeam($team);
         }
+        $user->removeAllProjects();
+        if (count($data['projects'])) {
+            $projects = $this->_getProjectRepository()->getByIds($data['projects']);
+            foreach ($projects as $project) {
+                $user->addProject($project);
+            }
+        }
         if ($data['password']) {
             $user->setPassword($user->setPlainPassword($data['password']));
         }
@@ -56,7 +64,7 @@ class UserManager
      * @param Team $team
      * @return bool
      */
-    public function create($data, Team $team)
+    public function  create($data, Team $team)
     {
         $user = new User();
         $user->setUsername($data['username']);
@@ -64,6 +72,12 @@ class UserManager
         $user->setPassword($user->setPlainPassword($data['password']));
         $user->setRoles($data['roles']);
         $user->setTeam($team);
+        if (count($data['projects'])) {
+            $projects = $this->_getProjectRepository()->getByIds($data['projects']);
+            foreach ($projects as $project) {
+                $user->addProject($project);
+            }
+        }
         $user->setEnabled((bool)$data['enabled']);
         return $this->save($user);
     }
@@ -92,8 +106,6 @@ class UserManager
     public function delete(User $user)
     {
         try {
-            $directory = getcwd() . "/files/" . md5($user->getId().$user->getSalt());
-            system("rm -rf ".escapeshellarg($directory));
             $this->entityManager->remove($user);
             $this->entityManager->flush();
         } catch (Exception $e) {
@@ -103,5 +115,13 @@ class UserManager
 
         return true;
 
+    }
+
+    /**
+     * @return ProjectRepository
+     */
+    private function _getProjectRepository()
+    {
+        return $this->entityManager->getRepository('EwaveCoreBundle:Project');
     }
 }

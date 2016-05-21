@@ -52,9 +52,20 @@ class ProjectRepository extends EntityRepository
     public function getAll()
     {
         $query = $this->createQueryBuilder('s')
-            ->addSelect('s.id, s.title');
+            ->addSelect('s.id, s.title')
+            ->leftJoin('s.team', 't', array('t.title', 't.id'))
+        ;
         $query = $query->orderBy('s.title')
             ->getQuery();
+        return $query->getResult();
+    }
+
+    public function getByIds(array $ids)
+    {
+        $query = $this->createQueryBuilder('s');
+        $query->where('s.id IN (:ids)')
+            ->setParameter('ids', $ids);
+        $query = $query->getQuery();
         return $query->getResult();
     }
 }
