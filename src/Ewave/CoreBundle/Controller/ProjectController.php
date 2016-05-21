@@ -59,7 +59,8 @@ class ProjectController extends AdvancedController
     public function createAction(Request $request)
     {
         $teams = $this->getTeamRepository()->getAll();
-        $form = $this->createForm(new ProjectType($teams));
+        $users = $this->getUserRepository()->getAll();
+        $form = $this->createForm(new ProjectType($teams, $users));
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -92,7 +93,8 @@ class ProjectController extends AdvancedController
             }
         }
         return array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'users' => $users
         );
     }
 
@@ -106,7 +108,8 @@ class ProjectController extends AdvancedController
     {
         $id = (int)$id;
         $teams = $this->getTeamRepository()->getAll();
-        $form = $this->createForm(new ProjectType($teams));
+        $users = $this->getUserRepository()->getAll();
+        $form = $this->createForm(new ProjectType($teams, $users));
         if ($id) {
             $projectRepository = $this->getProjectRepository();
             $project = $projectRepository->find($id);
@@ -117,6 +120,14 @@ class ProjectController extends AdvancedController
                 if ($projectTeam) {
                     $form->get('team')->setData($projectTeam->getId());
                 }
+                $existUsers = $project->getUsers()->toArray();
+                $existUsersArr = array();
+                if (count($existUsers)) {
+                    foreach ($existUsers as $existUser) {
+                        $existUsersArr[] = $existUser->getId();
+                    }
+                }
+                $form->get('users')->setData($existUsersArr);
                 if ($request->getMethod() == 'POST') {
                     $form->handleRequest($request);
                     if ($form->isValid()) {
@@ -156,7 +167,8 @@ class ProjectController extends AdvancedController
             return $this->entityNotFound();
         }
         return array(
-            'edit_form' => $form->createView()
+            'edit_form' => $form->createView(),
+            'users' => $users
         );
     }
 

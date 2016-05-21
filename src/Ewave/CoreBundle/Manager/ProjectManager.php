@@ -4,6 +4,8 @@ namespace Ewave\CoreBundle\Manager;
 
 use Ewave\CoreBundle\Entity\Project;
 use Ewave\CoreBundle\Entity\Team;
+use Ewave\CoreBundle\Entity\User;
+use Ewave\CoreBundle\Repository\UserRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -41,8 +43,9 @@ class ProjectManager
         $project->setTitle($data['title']);
         $project->setDescription($data['description']);
         $project->setTeam($team);
+        $this->removeAllUsers($project);
 
-        return $this->save($project);
+        return $this->save($project, $data);
     }
 
     /**
@@ -56,17 +59,39 @@ class ProjectManager
         $project->setTitle($data['title']);
         $project->setDescription($data['description']);
         $project->setTeam($team);
-        return $this->save($project);
+
+        return $this->save($project, $data);
     }
 
     /**
      * @param Project $project
      * @return bool
      */
-    public function save(Project $project)
+    public function save(Project $project, $data)
     {
         try {
             $this->entityManager->persist($project);
+            $this->entityManager->flush();
+
+            if (count($data['users'])) {
+                $users = $this->_getUserRepository()->getByIds($data['users']);
+                foreach ($users as $user) {
+                    $user->addProject($project);
+                    $this->saveUser($user);
+                }
+            }
+        } catch (Exception $e) {
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public function saveUser(User $user)
+    {
+        try {
+            $this->entityManager->persist($user);
             $this->entityManager->flush();
         } catch (Exception $e) {
 
@@ -91,6 +116,25 @@ class ProjectManager
         }
 
         return true;
+    }
 
+    /**
+     * @return UserRepository
+     */
+    private function _getUserRepository()
+    {
+        return $this->entityManager->getRepository('EwaveCoreBundle:User');
+    }
+
+    /**
+     * Remove users
+     * @param Project $project
+     */
+    public function removeAllUsers($project)
+    {
+        foreach ($project->getUsers() as $user) {
+            $user->removeProject($project);
+            $this->saveUser($user);
+        }
     }
 }

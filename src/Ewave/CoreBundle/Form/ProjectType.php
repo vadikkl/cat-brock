@@ -10,9 +10,14 @@ class ProjectType extends AbstractType
 {
     private $_teams = array();
 
-    public function __construct($teams) {
+    private $_users = array();
+
+    public function __construct($teams, $users) {
         foreach ($teams as $team) {
             $this->_teams[$team['id']] = $team['title'];
+        }
+        foreach ($users as $user) {
+            $this->_users[$user['id']] = $user['username'];
         }
     }
 
@@ -25,7 +30,13 @@ class ProjectType extends AbstractType
     {
         $builder
             ->add('title', 'text')
-            ->add('description', 'textarea')
+            ->add(
+                'description',
+                'textarea',
+                array(
+                    'required' => false
+                )
+            )
             ->add('submit', 'submit', array('label' => 'Save'))
         ;
         $builder->add(
@@ -39,6 +50,18 @@ class ProjectType extends AbstractType
                 'label' => 'Team'
             )
         );
+        if (count($this->_users)) {
+            $builder->add(
+                'users',
+                'choice',
+                array(
+                    'choices' => $this->_users,
+                    'label' => 'Users',
+                    'multiple' => true,
+                    'expanded' => true
+                )
+            );
+        }
     }
     
     /**
@@ -56,6 +79,6 @@ class ProjectType extends AbstractType
      */
     public function getName()
     {
-        return 'ewave_corebundle_project';
+        return '';
     }
 }

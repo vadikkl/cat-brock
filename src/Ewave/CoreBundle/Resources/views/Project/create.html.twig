@@ -26,6 +26,13 @@
                             {{ form_widget(form.team, { 'attr': {'class': 'form-control'} }) }}
                             {{ form_errors(form.team) }}
                         </div>
+                        {%  if form.users is defined %}
+                            <div class="form-group">
+                                {{ form_label(form.users) }}
+                                {{ form_widget(form.users) }}
+                                {{ form_errors(form.users) }}
+                            </div>
+                        {% endif %}
                         <div class="form-group">
                             {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-success'} }) }}
                         </div>
@@ -35,4 +42,14 @@
             </div>
         </div>
     </div>
+    {% if users|length %}
+        <script type="text/javascript">
+            var users = []
+            {% for user in users %}
+                {% if user.0.team %}
+                    users.push({user: {{ user.id }}, team:{{ user.0.team.id }}});
+                {% endif %}
+            {% endfor%}
+        </script>
+    {% endif %}
 {% endblock %}

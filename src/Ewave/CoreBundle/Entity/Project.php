@@ -32,7 +32,7 @@ class Project
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=5000)
+     * @ORM\Column(name="description", type="string", nullable=true, length=5000)
      */
     private $description;
 
@@ -49,6 +49,10 @@ class Project
      */
     protected $users;
 
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -91,7 +95,7 @@ class Project
      *
      * @return Project
      */
-    public function setDescription($description)
+    public function setDescription($description = null)
     {
         $this->description = $description;
 
@@ -134,12 +138,12 @@ class Project
     /**
      * Add users
      *
-     * @param \Ewave\CoreBundle\Entity\User $user
+     * @param \Ewave\CoreBundle\Entity\User $users
      * @return User
      */
-    public function addUser(\Ewave\CoreBundle\Entity\User $user)
+    public function addUser(\Ewave\CoreBundle\Entity\User $users)
     {
-        $this->users[] = $user;
+        $this->users[] = $users;
 
         return $this;
     }
@@ -157,7 +161,7 @@ class Project
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return User[]
      */
     public function getUsers()
     {

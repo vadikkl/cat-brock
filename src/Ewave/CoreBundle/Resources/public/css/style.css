@@ -5,7 +5,7 @@
 .error {
     color:red;
 }
-.form-group #roles input, .form-group #projects input {
+.form-group #roles input, .form-group #projects input, .form-group #users input {
     float: left;
     margin-right: 10px;
 }

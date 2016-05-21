@@ -63,4 +63,25 @@ class UserRepository extends EntityRepository
         $query->andWhere('u.roles NOT LIKE :role')
             ->setParameter('role', '%' . $this->_roleAdmin . '%');
     }
+
+    public function getAll()
+    {
+        $query = $this->createQueryBuilder('u')
+            ->addSelect('u.id, u.username');
+        $query->andWhere('u.roles NOT LIKE :role')
+            ->setParameter('role', '%' . $this->_roleAdmin . '%');
+        $query = $query->orderBy('u.username')
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function getByIds(array $ids)
+    {
+        $query = $this->createQueryBuilder('u');
+        $query->where('u.id IN (:ids)')
+            ->setParameter('ids', $ids);
+        $query = $query->getQuery();
+
+        return $query->getResult();
+    }
 }

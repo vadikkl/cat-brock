@@ -50,6 +50,11 @@ jQuery(document).ready(function() {
             jQuery('#projects :input[value="'+ projects[i].project +'"]').addClass('team' + projects[i].team);
         }
     }
+    if (typeof users !== 'undefined') {
+        for (var i = 0; i < users.length; i++) {
+            jQuery('#users :input[value="'+ users[i].user +'"]').addClass('team' + users[i].team);
+        }
+    }
 });
 
 jQuery('#team').on('change', function() {
@@ -59,6 +64,14 @@ jQuery('#team').on('change', function() {
             jQuery(this).prop('checked', false);
         });
         jQuery('#projects input.team' + team).each(function() {
+            jQuery(this).prop('checked', true);
+        });
+    }
+    if (jQuery('#users input.team' + team).length) {
+        jQuery('#projects input').each(function() {
+            jQuery(this).prop('checked', false);
+        });
+        jQuery('#users input.team' + team).each(function() {
             jQuery(this).prop('checked', true);
         });
     }
