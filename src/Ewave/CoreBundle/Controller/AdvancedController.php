@@ -2,8 +2,10 @@
 
 namespace Ewave\CoreBundle\Controller;
 
+use Ewave\CoreBundle\Manager\EnvironmentManager;
 use Ewave\CoreBundle\Manager\ProjectManager;
 use Ewave\CoreBundle\Manager\TeamManager;
+use Ewave\CoreBundle\Repository\EnvironmentRepository;
 use Ewave\CoreBundle\Repository\ProjectRepository;
 use Ewave\CoreBundle\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,8 +16,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Ewave\CoreBundle\Manager\HistoryManager;
 use Ewave\CoreBundle\Manager\SettingManager;
 use Ewave\CoreBundle\Manager\UserManager;
-use Ewave\CoreBundle\Repository\CatalogRepository;
-use Ewave\CoreBundle\Repository\FileRepository;
 use Ewave\CoreBundle\Repository\HistoryRepository;
 use Ewave\CoreBundle\Repository\SettingRepository;
 use Ewave\CoreBundle\Repository\UserRepository;
@@ -188,6 +188,22 @@ class AdvancedController extends Controller
     public function getProjectManager()
     {
         return $this->get('ewave.manager.project');
+    }
+
+    /**
+     * @return EnvironmentRepository
+     */
+    public function getEnvironmentRepository()
+    {
+        return $this->getRepository('Environment');
+    }
+
+    /**
+     * @return EnvironmentManager
+     */
+    public function getEnvironmentManager()
+    {
+        return $this->get('ewave.manager.environment');
     }
 
 }

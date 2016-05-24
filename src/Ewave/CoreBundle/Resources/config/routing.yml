@@ -19,6 +19,9 @@ ewave_control_team:
 ewave_control_project:
     resource: "@EwaveCoreBundle/Controller/ProjectController.php"
     type:     annotation
+ewave_control_environment:
+    resource: "@EwaveCoreBundle/Controller/EnvironmentController.php"
+    type:     annotation
 
 _security_check:
     pattern:  /login_check

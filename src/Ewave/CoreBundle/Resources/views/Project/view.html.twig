@@ -1,0 +1,67 @@
+{% extends 'EwaveCoreBundle::layout.html.twig' %}
+{% block title %}{{ project.title }} {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <div class="clearfix">
+                    <h2 class="pull-left">{{ project.title }}</h2>
+                    <div class="filter-block pull-right">
+                        <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary pull-right">
+                            <i class="fa fa-plus-circle fa-lg"></i> Create environment
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    {{ project.description }}
+                    <br>
+                    <br>
+                    {% if environments|length %}
+                    <div class="panel-group accordion" id="accordion">
+                        {% for environment in environments %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ environment.id }}">
+                                            {{ environment.type }}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse{{ environment.id }}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div>
+                                            <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
+                                                <i class="fa fa-plus-circle"></i> SSH
+                                            </a>
+                                            <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
+                                                <i class="fa fa-plus-circle"></i> SQL
+                                            </a>
+                                            <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
+                                                <i class="fa fa-plus-circle"></i> Back Office
+                                            </a>
+                                            <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
+                                                <i class="fa fa-plus-circle"></i> HTA
+                                            </a>
+                                            <div class="pull-right">
+                                                <a title="Edit" href="{{ path('ewave_control_environment_edit', { 'id': environment.id }) }}">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                |
+                                                <a type="Delete" href="{{ path('ewave_control_environment_delete', { 'id': environment.id }) }}">
+                                                    <i class="fa fa-remove"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <p>{{ environment.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

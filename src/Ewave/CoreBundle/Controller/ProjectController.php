@@ -213,4 +213,33 @@ class ProjectController extends AdvancedController
         );
         return $this->redirect($this->generateUrl('ewave_control_project'));
     }
+
+    /**
+     * View Project entity.
+     *
+     * @Route("/view/{id}", name="ewave_control_project_view")
+     * @Template("EwaveCoreBundle:Project:view.html.twig")
+     */
+    public function viewAction(Request $request, $id)
+    {
+        $id = (int)$id;
+
+        $environments = null;
+        if ($id) {
+            $projectRepository = $this->getProjectRepository();
+            $project = $projectRepository->find($id);
+            if ($project) {
+                $environmentRepository = $this->getEnvironmentRepository();
+                $environments = $environmentRepository->getAllByProject($id);
+            } else {
+                return $this->entityNotFound();
+            }
+        } else {
+            return $this->entityNotFound();
+        }
+        return array(
+            'project' => $project,
+            'environments' => $environments
+        );
+    }
 }
