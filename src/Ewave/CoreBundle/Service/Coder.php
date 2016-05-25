@@ -13,6 +13,9 @@ trait Coder {
      */
     public function encodeValue($value)
     {
+        if (empty($value)) {
+            return $value;
+        }
         return base64_encode($this->_strcode($value));
     }
 
@@ -22,6 +25,9 @@ trait Coder {
      */
     public function decodeValue($value)
     {
+        if (empty($value)) {
+            return $value;
+        }
         return $this->_strcode(base64_decode($value));
     }
 

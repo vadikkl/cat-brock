@@ -33,7 +33,7 @@
                                             <a href="{{ path('ewave_control_ssh_create', { 'project': project.id, 'environment': environment.id }) }}" class="btn btn-primary">
                                                 <i class="fa fa-plus-circle"></i> SSH
                                             </a>
-                                            <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
+                                            <a href="{{ path('ewave_control_mysql_create', { 'project': project.id, 'environment': environment.id }) }}" class="btn btn-primary">
                                                 <i class="fa fa-plus-circle"></i> SQL
                                             </a>
                                             <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
@@ -63,7 +63,7 @@
                                                             <i class="fa fa-edit"></i>
                                                         </a>
                                                         |
-                                                        <a type="Delete" href="{{ path('ewave_control_ssh_delete', { 'id': environment.id, 'project': project.id }) }}">
+                                                        <a type="Delete" href="{{ path('ewave_control_ssh_delete', { 'id': ssh.id, 'project': project.id }) }}">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
                                                     </div>
@@ -76,6 +76,29 @@
                                                             <p>{{ decode(ssh.description) }}</p>
                                                         {% endif %}
                                                         <br>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if environment.mysqls|length %}
+                                            <h3>SQL:</h3>
+                                            {% for mysql in environment.mysqls %}
+                                                <div>
+                                                    <div>
+                                                        <a title="Edit" href="{{ path('ewave_control_mysql_edit', { 'id': mysql.id, 'project': project.id }) }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        |
+                                                        <a type="Delete" href="{{ path('ewave_control_mysql_delete', { 'id': mysql.id, 'project': project.id }) }}">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <p><b>Server:</b> {{ decode(mysql.server) }}</p>
+                                                        <p><b>Port:</b> {{ decode(mysql.port) }}</p>
+                                                        <p><b>User:</b> {{ decode(mysql.user) }}</p>
+                                                        <p><b>Password:</b> {{ decode(mysql.password) }}</p>
+                                                        <p><b>Database:</b> {{ decode(mysql.dbname) }}</p>
                                                         <br>
                                                     </div>
                                                 </div>

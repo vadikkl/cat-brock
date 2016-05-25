@@ -25,6 +25,9 @@ ewave_control_environment:
 ewave_control_ssh:
     resource: "@EwaveCoreBundle/Controller/SshController.php"
     type:     annotation
+ewave_control_mysql:
+    resource: "@EwaveCoreBundle/Controller/MysqlController.php"
+    type:     annotation
 
 _security_check:
     pattern:  /login_check

@@ -3,10 +3,12 @@
 namespace Ewave\CoreBundle\Controller;
 
 use Ewave\CoreBundle\Manager\EnvironmentManager;
+use Ewave\CoreBundle\Manager\MysqlManager;
 use Ewave\CoreBundle\Manager\ProjectManager;
 use Ewave\CoreBundle\Manager\SshManager;
 use Ewave\CoreBundle\Manager\TeamManager;
 use Ewave\CoreBundle\Repository\EnvironmentRepository;
+use Ewave\CoreBundle\Repository\MysqlRepository;
 use Ewave\CoreBundle\Repository\ProjectRepository;
 use Ewave\CoreBundle\Repository\SshRepository;
 use Ewave\CoreBundle\Repository\TeamRepository;
@@ -222,5 +224,21 @@ class AdvancedController extends Controller
     public function getSshManager()
     {
         return $this->get('ewave.manager.ssh');
+    }
+
+    /**
+     * @return MysqlRepository
+     */
+    public function getMysqlRepository()
+    {
+        return $this->getRepository('Mysql');
+    }
+
+    /**
+     * @return MysqlManager
+     */
+    public function getMysqlManager()
+    {
+        return $this->get('ewave.manager.mysql');
     }
 }

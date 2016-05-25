@@ -48,9 +48,15 @@ class Environment
      */
     protected $sshs;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Mysql", mappedBy="environment")
+     */
+    protected $mysqls;
+
     public function __construct()
     {
         $this->sshs = new ArrayCollection();
+        $this->mysqls = new ArrayCollection();
     }
 
     /**
@@ -165,6 +171,39 @@ class Environment
     public function getSshs()
     {
         return $this->sshs;
+    }
+
+    /**
+     * Add mysql
+     *
+     * @param Mysql $mysql
+     * @return Environment
+     */
+    public function addMysql(Mysql $mysql)
+    {
+        $this->mysqls[] = $mysql;
+
+        return $this;
+    }
+
+    /**
+     * Remove ssh
+     *
+     * @param Mysql $mysql
+     */
+    public function removeMysql(Mysql $mysql)
+    {
+        $this->mysqls->removeElement($mysql);
+    }
+
+    /**
+     * Get ssh
+     *
+     * @return Collection
+     */
+    public function getMysqls()
+    {
+        return $this->mysqls;
     }
 }
 
