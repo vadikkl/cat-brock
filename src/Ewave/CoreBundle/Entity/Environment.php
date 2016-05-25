@@ -2,6 +2,8 @@
 
 namespace Ewave\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,7 +43,15 @@ class Environment
      */
     private $project;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Ssh", mappedBy="environment")
+     */
+    protected $sshs;
 
+    public function __construct()
+    {
+        $this->sshs = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -122,6 +132,39 @@ class Environment
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Add ssh
+     *
+     * @param Ssh $ssh
+     * @return Environment
+     */
+    public function addSsh(Ssh $ssh)
+    {
+        $this->sssh[] = $ssh;
+
+        return $this;
+    }
+
+    /**
+     * Remove ssh
+     *
+     * @param Ssh $ssh
+     */
+    public function removeSsh(Ssh $ssh)
+    {
+        $this->sshs->removeElement($ssh);
+    }
+
+    /**
+     * Get ssh
+     *
+     * @return Collection
+     */
+    public function getSshs()
+    {
+        return $this->sshs;
     }
 }
 

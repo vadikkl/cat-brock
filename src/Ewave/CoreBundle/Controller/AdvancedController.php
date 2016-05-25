@@ -4,9 +4,11 @@ namespace Ewave\CoreBundle\Controller;
 
 use Ewave\CoreBundle\Manager\EnvironmentManager;
 use Ewave\CoreBundle\Manager\ProjectManager;
+use Ewave\CoreBundle\Manager\SshManager;
 use Ewave\CoreBundle\Manager\TeamManager;
 use Ewave\CoreBundle\Repository\EnvironmentRepository;
 use Ewave\CoreBundle\Repository\ProjectRepository;
+use Ewave\CoreBundle\Repository\SshRepository;
 use Ewave\CoreBundle\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -206,4 +208,19 @@ class AdvancedController extends Controller
         return $this->get('ewave.manager.environment');
     }
 
+    /**
+     * @return SshRepository
+     */
+    public function getSshRepository()
+    {
+        return $this->getRepository('Ssh');
+    }
+
+    /**
+     * @return SshManager
+     */
+    public function getSshManager()
+    {
+        return $this->get('ewave.manager.ssh');
+    }
 }

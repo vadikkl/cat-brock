@@ -2,6 +2,8 @@ parameters:
     ewave.manager.subway.class: Ewave\CoreBundle\Manager\SubwayManager
 
 services:
-#    ewave.manager.subway:
-#        class: %ewave.manager.subway.class%
-#        arguments: [doctrine.entity_manager]
+  twig.extension.decode:
+          class: Ewave\CoreBundle\Twig\DecodeExtension
+          public: true
+          tags:
+              - { name: twig.extension }

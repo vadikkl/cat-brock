@@ -30,7 +30,7 @@
                                 <div id="collapse{{ environment.id }}" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <div>
-                                            <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
+                                            <a href="{{ path('ewave_control_ssh_create', { 'project': project.id, 'environment': environment.id }) }}" class="btn btn-primary">
                                                 <i class="fa fa-plus-circle"></i> SSH
                                             </a>
                                             <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
@@ -54,6 +54,33 @@
                                         </div>
                                         <br>
                                         <p>{{ environment.description }}</p>
+                                        {% if environment.sshs|length %}
+                                            <h3>SSH:</h3>
+                                            {% for ssh in environment.sshs %}
+                                                <div>
+                                                    <div>
+                                                        <a title="Edit" href="{{ path('ewave_control_ssh_edit', { 'id': ssh.id, 'project': project.id }) }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        |
+                                                        <a type="Delete" href="{{ path('ewave_control_ssh_delete', { 'id': environment.id, 'project': project.id }) }}">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <p><b>Server:</b> {{ decode(ssh.server) }}</p>
+                                                        <p><b>Port:</b> {{ decode(ssh.port) }}</p>
+                                                        <p><b>User:</b> {{ decode(ssh.user) }}</p>
+                                                        <p><b>Password:</b> {{ decode(ssh.password) }}</p>
+                                                        {% if ssh.description|length  %}
+                                                            <p>{{ decode(ssh.description) }}</p>
+                                                        {% endif %}
+                                                        <br>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
