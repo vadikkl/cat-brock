@@ -53,10 +53,22 @@ class Environment
      */
     protected $mysqls;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Hta", mappedBy="environment")
+     */
+    protected $htas;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Office", mappedBy="environment")
+     */
+    protected $offices;
+
     public function __construct()
     {
         $this->sshs = new ArrayCollection();
         $this->mysqls = new ArrayCollection();
+        $this->offices = new ArrayCollection();
+        $this->htas = new ArrayCollection();
     }
 
     /**
@@ -204,6 +216,73 @@ class Environment
     public function getMysqls()
     {
         return $this->mysqls;
+    }
+
+    /**
+     * Add Office
+     *
+     * @param Office $office
+     * @return Environment
+     */
+    public function addOffice(Office $office)
+    {
+        $this->offices[] = $office;
+
+        return $this;
+    }
+
+    /**
+     * Remove Office
+     *
+     * @param Office $office
+     */
+    public function removeOffice(Office $office)
+    {
+        $this->mysqls->removeElement($office);
+    }
+
+    /**
+     * Get Office
+     *
+     * @return Collection
+     */
+    public function getOffices()
+    {
+        return $this->offices;
+    }
+
+
+    /**
+     * Add Hta
+     *
+     * @param Hta $hta
+     * @return Environment
+     */
+    public function addHta(Hta $hta)
+    {
+        $this->htas[] = $hta;
+
+        return $this;
+    }
+
+    /**
+     * Remove Hta
+     *
+     * @param Hta $hta
+     */
+    public function removeHta(Hta $hta)
+    {
+        $this->htas->removeElement($hta);
+    }
+
+    /**
+     * Get Hta
+     *
+     * @return Collection
+     */
+    public function getHtas()
+    {
+        return $this->htas;
     }
 }
 

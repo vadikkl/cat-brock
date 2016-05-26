@@ -1,0 +1,36 @@
+{% extends 'EwaveCoreBundle::layout.html.twig' %}
+{% set is_book = true %}
+{% block title %}Edit Back Office Credentials {{ app.session.get('settings').separator }} {{ parent() }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box">
+                        <h2>Edit Back Office Credentials</h2>
+                        {{ form_start(edit_form) }}
+                        <div class="errors">{{ form_errors(edit_form) }}</div>
+                        {{ form_widget(edit_form._token) }}
+                        <div class="form-group">
+                            {{ form_label(edit_form.url) }}
+                            {{ form_widget(edit_form.url, { 'attr': {'class': 'form-control', 'placeholder': 'Enter url'} }) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(edit_form.user) }}
+                            {{ form_widget(edit_form.user, { 'attr': {'class': 'form-control', 'placeholder': 'Enter user'} }) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(edit_form.password) }}
+                            {{ form_widget(edit_form.password, { 'attr': {'class': 'form-control', 'placeholder': 'Enter password'} }) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_widget(edit_form.submit, { 'attr': {'class': 'btn btn-success'} }) }}
+                        </div>
+                        {{ form_end(edit_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

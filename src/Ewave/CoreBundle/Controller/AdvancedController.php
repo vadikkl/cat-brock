@@ -3,12 +3,16 @@
 namespace Ewave\CoreBundle\Controller;
 
 use Ewave\CoreBundle\Manager\EnvironmentManager;
+use Ewave\CoreBundle\Manager\HtaManager;
 use Ewave\CoreBundle\Manager\MysqlManager;
+use Ewave\CoreBundle\Manager\OfficeManager;
 use Ewave\CoreBundle\Manager\ProjectManager;
 use Ewave\CoreBundle\Manager\SshManager;
 use Ewave\CoreBundle\Manager\TeamManager;
 use Ewave\CoreBundle\Repository\EnvironmentRepository;
+use Ewave\CoreBundle\Repository\HtaRepository;
 use Ewave\CoreBundle\Repository\MysqlRepository;
+use Ewave\CoreBundle\Repository\OfficeRepository;
 use Ewave\CoreBundle\Repository\ProjectRepository;
 use Ewave\CoreBundle\Repository\SshRepository;
 use Ewave\CoreBundle\Repository\TeamRepository;
@@ -240,5 +244,37 @@ class AdvancedController extends Controller
     public function getMysqlManager()
     {
         return $this->get('ewave.manager.mysql');
+    }
+
+    /**
+     * @return OfficeRepository
+     */
+    public function getOfficeRepository()
+    {
+        return $this->getRepository('Office');
+    }
+
+    /**
+     * @return OfficeManager
+     */
+    public function getOfficeManager()
+    {
+        return $this->get('ewave.manager.office');
+    }
+
+    /**
+     * @return HtaRepository
+     */
+    public function getHtaRepository()
+    {
+        return $this->getRepository('Hta');
+    }
+
+    /**
+     * @return HtaManager
+     */
+    public function getHtaManager()
+    {
+        return $this->get('ewave.manager.hta');
     }
 }

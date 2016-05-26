@@ -36,10 +36,10 @@
                                             <a href="{{ path('ewave_control_mysql_create', { 'project': project.id, 'environment': environment.id }) }}" class="btn btn-primary">
                                                 <i class="fa fa-plus-circle"></i> SQL
                                             </a>
-                                            <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
+                                            <a href="{{ path('ewave_control_office_create', { 'project': project.id, 'environment': environment.id }) }}" class="btn btn-primary">
                                                 <i class="fa fa-plus-circle"></i> Back Office
                                             </a>
-                                            <a href="{{ path('ewave_control_environment_create', { 'project': project.id }) }}" class="btn btn-primary">
+                                            <a href="{{ path('ewave_control_hta_create', { 'project': project.id, 'environment': environment.id }) }}" class="btn btn-primary">
                                                 <i class="fa fa-plus-circle"></i> HTA
                                             </a>
                                             <div class="pull-right">
@@ -99,6 +99,49 @@
                                                         <p><b>User:</b> {{ decode(mysql.user) }}</p>
                                                         <p><b>Password:</b> {{ decode(mysql.password) }}</p>
                                                         <p><b>Database:</b> {{ decode(mysql.dbname) }}</p>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if environment.offices|length %}
+                                            <h3>Back Office Credentials:</h3>
+                                            {% for office in environment.offices %}
+                                                <div>
+                                                    <div>
+                                                        <a title="Edit" href="{{ path('ewave_control_office_edit', { 'id': office.id, 'project': project.id }) }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        |
+                                                        <a type="Delete" href="{{ path('ewave_control_office_delete', { 'id': office.id, 'project': project.id }) }}">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <p><b>Url:</b> <a target="_blank" href="{{ decode(office.url) }}">{{ decode(office.url) }}</a></p>
+                                                        <p><b>User:</b> {{ decode(office.user) }}</p>
+                                                        <p><b>Password:</b> {{ decode(office.password) }}</p>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if environment.htas|length %}
+                                            <h3>HTTP Authentication:</h3>
+                                            {% for hta in environment.htas %}
+                                                <div>
+                                                    <div>
+                                                        <a title="Edit" href="{{ path('ewave_control_hta_edit', { 'id': hta.id, 'project': project.id }) }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        |
+                                                        <a type="Delete" href="{{ path('ewave_control_hta_delete', { 'id': hta.id, 'project': project.id }) }}">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <p><b>User:</b> {{ decode(hta.user) }}</p>
+                                                        <p><b>Password:</b> {{ decode(hta.password) }}</p>
                                                         <br>
                                                     </div>
                                                 </div>

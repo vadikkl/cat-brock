@@ -28,6 +28,12 @@ ewave_control_ssh:
 ewave_control_mysql:
     resource: "@EwaveCoreBundle/Controller/MysqlController.php"
     type:     annotation
+ewave_control_office:
+    resource: "@EwaveCoreBundle/Controller/OfficeController.php"
+    type:     annotation
+ewave_control_hta:
+    resource: "@EwaveCoreBundle/Controller/HtaController.php"
+    type:     annotation
 
 _security_check:
     pattern:  /login_check
