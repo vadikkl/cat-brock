@@ -18,6 +18,7 @@ use Ewave\CoreBundle\Service\Export;
 class ProjectRepository extends EntityRepository
 {
     const FILEZILA_SEP = "&#x0A;";
+    const PAC_SEP = "#x2028";
 
     use Coder;
 
@@ -83,6 +84,8 @@ class ProjectRepository extends EntityRepository
         switch ($type) {
             case 'filezila':
                 $this->_exportFilezila();
+            case 'pac':
+                $this->_exportPac();
         }
     }
 
@@ -145,6 +148,88 @@ class ProjectRepository extends EntityRepository
             $xml->formatOutput = true;
             $fileName = $directory . '/Filezila.xml';
             $xml->save($fileName);
+
+            $export = new Export();
+            $export->download($fileName);
+        }
+    }
+
+    private function _exportPac() {
+        $projects = $this->_getProjects();
+        if (count($projects)) {
+            $content = array(
+                '__PAC__EXPORTED__' => array(
+                    'children' => array(
+                        md5('EWAVE') => 1
+                    )
+                ),
+                md5('EWAVE') => array(
+                    '_is_group' => 1,
+                    '_protected' => 0,
+                    'description' => 'Connection group EWAVE',
+                    'name' => "EWAVE",
+                    'parent' => "__PAC__EXPORTED__",
+                    'screenshots' => "~",
+                    'variables' => "[]~"
+                )
+            );
+
+            /* @var $project Project */
+            foreach ($projects as $project) {
+                if ($environments = $project->getEnvironments()) {
+                    /* @var $environment Environment */
+                    foreach ($environments as $key => $environment) {
+                        $sshs = $environment->getSshs();
+                        if (count($sshs)) {
+                            $uid = md5($project->getTitle() . $project->getId());
+                            if (!$key) {
+                                $content[$uid] = array(
+                                    '_is_group' => 1,
+                                    '_protected' => 0,
+                                    'description' => 'Connection group ' . $project->getTitle(),
+                                    'name' => $project->getTitle(),
+                                    'parent' => md5('EWAVE'),
+                                    'screenshots' => "~"
+                                );
+                                $content[md5('EWAVE')]['children'][$uid] = 1;
+                            }
+                            /* @var $ssh Ssh */
+                            foreach ($sshs as $ssh) {
+                                $uidSsh = md5($project->getTitle() . $project->getId() . $ssh->getId());
+                                $name = $project->getTitle() . ' ' . $environment->getType();
+                                $content[$uidSsh] = array(
+                                    'KPX title regexp' => '.*' . $name . '.*',
+                                    '_is_group' => 0,
+                                    '_protected' => 0,
+                                    'description' => 'Connection with ' . $name,
+                                    'name' => $name,
+                                    'title' => $name,
+                                    'pass' => $this->decodeValue($ssh->getPassword()),
+                                    'port' => $this->decodeValue($ssh->getPort()),
+                                    'user' => $this->decodeValue($ssh->getUser()),
+                                    'ip' => $this->decodeValue($ssh->getServer()),
+                                    'parent' => $uid,
+                                    'method' => 'SSH'
+                                );
+                                $content[$uid]['children'][$uidSsh] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            $directory = getcwd() . "/files/" . md5(time());
+            if (!is_dir($directory)) {
+                mkdir($directory);
+            }
+            $yaml = yaml_emit($content);
+            $yaml = str_replace('...', '', $yaml);
+            $fileName = $directory . '/pac_export.yml';
+
+            $file = fopen($fileName, 'a+');
+            fwrite($file, $yaml);
+            fclose($file);
 
             $export = new Export();
             $export->download($fileName);
