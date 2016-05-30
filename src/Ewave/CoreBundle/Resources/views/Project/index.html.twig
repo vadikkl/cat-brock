@@ -24,6 +24,12 @@
                         </a>
                     </div>
                 </div>
+                {% if entities|length %}
+                <p>Export to:
+                    <a href="{{ path('ewave_control_export', {'type': 'filezila'}) }}">Filezila</a> |
+                    <a href="{{ path('ewave_control_export', {'type': 'pac'}) }}">PAC</a>
+                </p>
+                {% endif %}
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>

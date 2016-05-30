@@ -34,6 +34,9 @@ ewave_control_office:
 ewave_control_hta:
     resource: "@EwaveCoreBundle/Controller/HtaController.php"
     type:     annotation
+ewave_control_export:
+    resource: "@EwaveCoreBundle/Controller/ExportController.php"
+    type:     annotation
 
 _security_check:
     pattern:  /login_check

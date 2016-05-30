@@ -3,6 +3,7 @@
 namespace Ewave\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,9 +50,15 @@ class Project
      */
     protected $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Environment", mappedBy="project")
+     */
+    protected $environments;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->environments = new ArrayCollection();
     }
 
     /**
@@ -166,6 +173,39 @@ class Project
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Add Environment
+     *
+     * @param Environment $environment
+     * @return Project
+     */
+    public function addEnvironment(Environment $environment)
+    {
+        $this->environments[] = $environment;
+
+        return $this;
+    }
+
+    /**
+     * Remove Environment
+     *
+     * @param Environment $environment
+     */
+    public function removeEnvironment(Environment $environment)
+    {
+        $this->environments->removeElement($environment);
+    }
+
+    /**
+     * Get Environment
+     *
+     * @return Collection
+     */
+    public function getEnvironments()
+    {
+        return $this->environments;
     }
 }
 

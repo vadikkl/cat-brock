@@ -2,6 +2,12 @@
 
 namespace Ewave\CoreBundle\Repository;
 use Doctrine\ORM\EntityRepository;
+use DOMDocument;
+use Ewave\CoreBundle\Entity\Environment;
+use Ewave\CoreBundle\Entity\Project;
+use Ewave\CoreBundle\Entity\Ssh;
+use Ewave\CoreBundle\Service\Coder;
+use Ewave\CoreBundle\Service\Export;
 
 /**
  * ProjectRepository
@@ -11,6 +17,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProjectRepository extends EntityRepository
 {
+    const FILEZILA_SEP = "&#x0A;";
+
+    use Coder;
+
     public function getList(
         $search,
         $page = 1,
@@ -65,6 +75,84 @@ class ProjectRepository extends EntityRepository
         $query = $this->createQueryBuilder('s');
         $query->where('s.id IN (:ids)')
             ->setParameter('ids', $ids);
+        $query = $query->getQuery();
+        return $query->getResult();
+    }
+
+    public function export($type) {
+        switch ($type) {
+            case 'filezila':
+                $this->_exportFilezila();
+        }
+    }
+
+    private function _exportFilezila() {
+        $projects = $this->_getProjects();
+        if (count($projects)) {
+            $xml = new DOMDocument('1.0', 'utf-8');
+            $root = $xml->createElement('FileZilla3');
+            $xml->appendChild($root);
+            $servers = $xml->createElement('Servers');
+            $root->appendChild($servers);
+            $parentFolder = $xml->createElement('Folder', 'EWAVE' . self::FILEZILA_SEP);
+            $parentFolder->setAttribute('expanded', '1');
+            $servers->appendChild($parentFolder);
+
+            /* @var $project Project */
+            foreach ($projects as $project) {
+                if ($environments = $project->getEnvironments()) {
+                    /* @var $environment Environment */
+                    foreach ($environments as $key => $environment) {
+                        $sshs = $environment->getSshs();
+                        if (count($sshs)) {
+                            if (!$key) {
+                                $folder = $xml->createElement('Folder', $project->getTitle() . self::FILEZILA_SEP);
+                                $parentFolder->appendChild($folder);
+                            }
+                            /* @var $ssh Ssh */
+                            foreach ($sshs as $ssh) {
+                                $serverName = $project->getTitle() . ' - ' . $environment->getType();
+                                $server = $xml->createElement('Server',  $serverName);
+                                $folder->appendChild($server);;
+                                $server->appendChild($xml->createElement('Host',  $this->decodeValue($ssh->getServer())));
+                                $server->appendChild($xml->createElement('Port',  $this->decodeValue($ssh->getPort())));
+                                $server->appendChild($xml->createElement('Protocol', '1'));
+                                $server->appendChild($xml->createElement('Type', '0'));
+                                $server->appendChild($xml->createElement('User', $this->decodeValue($ssh->getUser())));
+                                $server->appendChild($xml->createElement('Pass', $this->decodeValue($ssh->getPassword())));
+                                $server->appendChild($xml->createElement('Logontype', '1'));
+                                $server->appendChild($xml->createElement('TimezoneOffset', '0'));
+                                $server->appendChild($xml->createElement('PasvMode', 'MODE_DEFAULT'));
+                                $server->appendChild($xml->createElement('MaximumMultipleConnections', '0'));
+                                $server->appendChild($xml->createElement('EncodingType', 'Auto'));
+                                $server->appendChild($xml->createElement('BypassProxy', '0'));
+                                $server->appendChild($xml->createElement('Name', $serverName));
+                                $server->appendChild($xml->createElement('Comments'));
+                                $server->appendChild($xml->createElement('LocalDir'));
+                                $server->appendChild($xml->createElement('RemoteDir'));
+                                $server->appendChild($xml->createElement('SyncBrowsing', '0'));
+                            }
+                        }
+                    }
+                }
+            }
+
+            $directory = getcwd() . "/files/" . md5(time());
+            if (!is_dir($directory)) {
+                mkdir($directory);
+            }
+            $xml->preserveWhiteSpace = false;
+            $xml->formatOutput = true;
+            $fileName = $directory . '/Filezila.xml';
+            $xml->save($fileName);
+
+            $export = new Export();
+            $export->download($fileName);
+        }
+    }
+
+    protected function _getProjects() {
+        $query = $this->createQueryBuilder('p');
         $query = $query->getQuery();
         return $query->getResult();
     }
